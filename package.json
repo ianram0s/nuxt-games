@@ -9,18 +9,27 @@
         "preview": "nuxt preview",
         "postinstall": "nuxt prepare",
         "lint": "eslint . --fix",
-        "format": "prettier --write ."
+        "format": "prettier --write .",
+        "db:push": "drizzle-kit push",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "drizzle-kit migrate",
+        "db:studio": "drizzle-kit studio"
     },
     "dependencies": {
         "@nuxt/eslint": "1.9.0",
         "@nuxt/ui": "4.0.1",
+        "better-auth": "^1.3.27",
+        "drizzle-orm": "^0.44.6",
         "eslint": "^9.0.0",
         "nuxt": "^4.1.3",
+        "postgres": "^3.4.7",
         "typescript": "^5.6.3",
         "vue": "^3.5.22",
         "vue-router": "^4.5.1"
     },
     "devDependencies": {
+        "@types/node": "^24.7.0",
+        "drizzle-kit": "^0.31.5",
         "eslint-config-prettier": "^10.1.8",
         "eslint-plugin-prettier": "^5.5.4",
         "prettier": "^3.6.2"
