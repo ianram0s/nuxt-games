@@ -5,11 +5,10 @@ const isProtectedRoute = (path: string) => {
 };
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const { session, showAuthRequiredToast } = await useAuth();
+    const { session } = await useAuth();
 
     if (!session.value) {
         if (isProtectedRoute(to.path)) {
-            showAuthRequiredToast();
             return navigateTo('/sign-in');
         }
     } else {

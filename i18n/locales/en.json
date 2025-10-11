@@ -1,0 +1,38 @@
+{
+    "app": {
+        "name": "Spy Game"
+    },
+    "common": {
+        "signIn": "Sign In",
+        "signOut": "Sign Out",
+        "welcome": "Welcome",
+        "name": "Name",
+        "email": "Email",
+        "avatar": "Avatar"
+    },
+    "auth": {
+        "sessionError": {
+            "title": "Authentication Error",
+            "description": "Failed to authenticate user."
+        },
+        "signInFailed": {
+            "title": "Sign-in failed",
+            "description": "An error occurred during sign-in."
+        },
+        "signOutFailed": {
+            "title": "Sign out failed",
+            "description": "An error occurred during sign-out."
+        },
+        "signedOut": {
+            "title": "Signed out",
+            "description": "You have been successfully signed out."
+        },
+        "authRequired": {
+            "title": "Authentication Required",
+            "description": "Please sign-in to access this page."
+        }
+    },
+    "footer": {
+        "copyright": "© 2025 Spy Game - IanBytes.com. All rights reserved."
+    }
+}

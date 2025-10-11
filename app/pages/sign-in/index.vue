@@ -1,19 +1,49 @@
 <script setup lang="ts">
 const { user, signIn, signOut } = await useAuth();
+const { t } = useI18n({
+    useScope: 'local',
+});
+const toast = useToast();
 
 const isLoading = ref(false);
 
 const handleGoogleSignIn = async () => {
     isLoading.value = true;
 
-    const { error } = await signIn('google');
+    const { error } = await signIn.social({
+        provider: 'google',
+    });
+
     if (error) {
+        toast.add({
+            title: $t('auth.signInFailed.title'),
+            description: error.message || $t('auth.signInFailed.description'),
+            icon: 'i-heroicons-x-circle',
+            color: 'error',
+        });
         isLoading.value = false;
     }
 };
 
 const handleSignOut = async () => {
-    await signOut();
+    const { error } = await signOut();
+
+    if (error) {
+        toast.add({
+            title: $t('auth.signOutFailed.title'),
+            description: $t('auth.signOutFailed.description'),
+            icon: 'i-heroicons-x-circle',
+            color: 'error',
+        });
+        return;
+    }
+
+    toast.add({
+        title: $t('auth.signedOut.title'),
+        description: $t('auth.signedOut.description'),
+        icon: 'i-heroicons-arrow-right-on-rectangle',
+        color: 'success',
+    });
 };
 </script>
 
@@ -34,9 +64,9 @@ const handleSignOut = async () => {
                                 />
                             </div>
                         </div>
-                        <h1 class="text-2xl font-bold">Welcome</h1>
+                        <h1 class="text-2xl font-bold">{{ $t('common.welcome') }}</h1>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ user ? 'You are signed in' : 'Sign in to continue' }}
+                            {{ user ? t('status.signedIn') : t('status.signInPrompt') }}
                         </p>
                     </div>
                 </template>
@@ -48,8 +78,8 @@ const handleSignOut = async () => {
                             icon="i-heroicons-information-circle"
                             color="neutral"
                             variant="soft"
-                            title="Not authenticated"
-                            description="Please sign in with your Google account to continue."
+                            :title="t('alerts.notAuthenticated.title')"
+                            :description="t('alerts.notAuthenticated.description')"
                         />
 
                         <UButton
@@ -61,7 +91,7 @@ const handleSignOut = async () => {
                             :loading="isLoading"
                             class="cursor-pointer"
                         >
-                            Continue with Google
+                            {{ t('actions.continueWithGoogle') }}
                         </UButton>
                     </div>
 
@@ -71,33 +101,33 @@ const handleSignOut = async () => {
                             icon="i-heroicons-check-circle"
                             color="neutral"
                             variant="soft"
-                            title="Successfully authenticated"
-                            description="You're signed in and ready to go!"
+                            :title="t('alerts.authenticated.title')"
+                            :description="t('alerts.authenticated.description')"
                         />
 
                         <!-- User Info Card -->
                         <div class="space-y-3">
                             <div class="flex items-center gap-2 text-sm font-medium">
                                 <UIcon name="i-heroicons-user-circle" class="w-5 h-5" />
-                                <span>User Information</span>
+                                <span>{{ t('userInfo.title') }}</span>
                             </div>
 
                             <UCard>
                                 <div class="space-y-3 text-sm">
                                     <div v-if="user.name" class="flex justify-between">
-                                        <span class="text-gray-500 dark:text-gray-400">Name</span>
+                                        <span class="text-gray-500 dark:text-gray-400">{{ $t('common.name') }}</span>
                                         <span class="font-medium">{{ user.name }}</span>
                                     </div>
                                     <USeparator v-if="user?.name" />
 
                                     <div v-if="user.email" class="flex justify-between">
-                                        <span class="text-gray-500 dark:text-gray-400">Email</span>
+                                        <span class="text-gray-500 dark:text-gray-400">{{ $t('common.email') }}</span>
                                         <span class="font-medium">{{ user.email }}</span>
                                     </div>
                                     <USeparator v-if="user?.email" />
 
                                     <div v-if="user.image" class="flex justify-between items-center">
-                                        <span class="text-gray-500 dark:text-gray-400">Avatar</span>
+                                        <span class="text-gray-500 dark:text-gray-400">{{ $t('common.avatar') }}</span>
                                         <UAvatar :src="user.image" :alt="user.name" size="sm" />
                                     </div>
                                 </div>
@@ -114,7 +144,7 @@ const handleSignOut = async () => {
                             icon="i-heroicons-arrow-right-on-rectangle"
                             class="cursor-pointer"
                         >
-                            Sign Out
+                            {{ $t('common.signOut') }}
                         </UButton>
                     </div>
                 </div>
@@ -122,3 +152,52 @@ const handleSignOut = async () => {
         </div>
     </div>
 </template>
+
+<i18n lang="json">
+{
+    "en": {
+        "status": {
+            "signedIn": "You are signed in",
+            "signInPrompt": "Sign in to continue"
+        },
+        "alerts": {
+            "notAuthenticated": {
+                "title": "Not authenticated",
+                "description": "Please sign in with your Google account to continue."
+            },
+            "authenticated": {
+                "title": "Successfully authenticated",
+                "description": "You're signed in and ready to go!"
+            }
+        },
+        "actions": {
+            "continueWithGoogle": "Continue with Google"
+        },
+        "userInfo": {
+            "title": "User Information"
+        }
+    },
+    "pt-br": {
+        "status": {
+            "signedIn": "Você está conectado",
+            "signInPrompt": "Entre para continuar"
+        },
+        "alerts": {
+            "notAuthenticated": {
+                "title": "Não autenticado",
+                "description": "Por favor, entre com sua conta Google para continuar."
+            },
+            "authenticated": {
+                "title": "Autenticado com sucesso",
+                "description": "Você está conectado e pronto para começar!"
+            }
+        },
+        "actions": {
+            "continueWithGoogle": "Continuar com Google"
+        },
+        "userInfo": {
+            "title": "Informações do Usuário"
+        }
+    }
+}
+</i18n>
