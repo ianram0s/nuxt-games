@@ -1,18 +1,22 @@
 <script setup lang="ts">
-import { authClient } from '~/lib/auth-client';
-
-const { data: session } = await authClient.useSession(useFetch);
+const { user, signOut } = await useAuth();
 
 const isSigningOut = ref(false);
+const isSigningIn = ref(false);
 
-const navigateToSignIn = () => {
-    navigateTo('/sign-in');
+const navigateToSignIn = async () => {
+    isSigningIn.value = true;
+    try {
+        await navigateTo('/sign-in');
+    } finally {
+        isSigningIn.value = false;
+    }
 };
 
 const handleSignOut = async () => {
     isSigningOut.value = true;
     try {
-        await authClient.signOut();
+        await signOut({ redirect: '/' });
     } finally {
         isSigningOut.value = false;
     }
@@ -29,17 +33,19 @@ const handleSignOut = async () => {
 
         <div class="flex items-center gap-4">
             <UButton
-                v-if="!session"
+                v-if="!user"
                 @click="navigateToSignIn"
                 color="primary"
                 variant="soft"
-                icon="i-heroicons-arrow-right-on-rectangle"
+                :icon="isSigningIn ? 'i-heroicons-arrow-path' : 'i-heroicons-arrow-right-on-rectangle'"
+                :loading="isSigningIn"
+                :disabled="isSigningIn"
                 class="cursor-pointer"
             >
                 Sign In
             </UButton>
             <div v-else class="flex items-center gap-3">
-                <UAvatar :src="session.user.image || undefined" :alt="session.user.name || 'User'" size="lg" />
+                <UAvatar :src="user.image || undefined" :alt="user.name || 'User'" size="lg" />
 
                 <UButton
                     @click="handleSignOut"

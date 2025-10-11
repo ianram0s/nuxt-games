@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { authClient } from '~/lib/auth-client';
-
-const { data: session } = await authClient.useSession(useFetch);
+const { isLoggedIn } = await useAuth();
 
 const navigateToSignIn = () => {
     navigateTo('/sign-in');
@@ -71,7 +69,7 @@ const navigateToGame = () => {
                 <!-- Call to Action -->
                 <div class="space-y-4">
                     <UButton
-                        v-if="session"
+                        v-if="isLoggedIn"
                         @click="navigateToGame"
                         color="primary"
                         size="xl"
@@ -93,7 +91,7 @@ const navigateToGame = () => {
 
                     <p class="text-sm text-gray-500 dark:text-gray-400">
                         {{
-                            session
+                            isLoggedIn
                                 ? 'Ready to start your game?'
                                 : 'Sign in to start playing and competing with friends!'
                         }}

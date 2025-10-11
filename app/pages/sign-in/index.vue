@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { authClient } from '~/lib/auth-client';
+const { user, signIn, signOut } = await useAuth();
 
-const { data: session } = await authClient.useSession(useFetch);
 const isLoading = ref(false);
 
 const handleGoogleSignIn = async () => {
     isLoading.value = true;
-    await authClient.signIn.social({
-        provider: 'google',
-    });
+
+    const { error } = await signIn('google');
+    if (error) {
+        isLoading.value = false;
+    }
 };
 
 const handleSignOut = async () => {
-    await authClient.signOut();
+    await signOut();
 };
 </script>
 
@@ -35,14 +36,14 @@ const handleSignOut = async () => {
                         </div>
                         <h1 class="text-2xl font-bold">Welcome</h1>
                         <p class="text-sm text-gray-500 dark:text-gray-400">
-                            {{ session ? 'You are signed in' : 'Sign in to continue' }}
+                            {{ user ? 'You are signed in' : 'Sign in to continue' }}
                         </p>
                     </div>
                 </template>
 
                 <div class="space-y-6 py-4">
                     <!-- Not Authenticated -->
-                    <div v-if="!session" class="space-y-6">
+                    <div v-if="!user" class="space-y-6">
                         <UAlert
                             icon="i-heroicons-information-circle"
                             color="neutral"
@@ -83,21 +84,21 @@ const handleSignOut = async () => {
 
                             <UCard>
                                 <div class="space-y-3 text-sm">
-                                    <div v-if="session.user.name" class="flex justify-between">
+                                    <div v-if="user.name" class="flex justify-between">
                                         <span class="text-gray-500 dark:text-gray-400">Name</span>
-                                        <span class="font-medium">{{ session.user.name }}</span>
+                                        <span class="font-medium">{{ user.name }}</span>
                                     </div>
-                                    <USeparator v-if="session.user.name" />
+                                    <USeparator v-if="user?.name" />
 
-                                    <div v-if="session.user.email" class="flex justify-between">
+                                    <div v-if="user.email" class="flex justify-between">
                                         <span class="text-gray-500 dark:text-gray-400">Email</span>
-                                        <span class="font-medium">{{ session.user.email }}</span>
+                                        <span class="font-medium">{{ user.email }}</span>
                                     </div>
-                                    <USeparator v-if="session.user.email" />
+                                    <USeparator v-if="user?.email" />
 
-                                    <div v-if="session.user.image" class="flex justify-between items-center">
+                                    <div v-if="user.image" class="flex justify-between items-center">
                                         <span class="text-gray-500 dark:text-gray-400">Avatar</span>
-                                        <UAvatar :src="session.user.image" :alt="session.user.name" size="sm" />
+                                        <UAvatar :src="user.image" :alt="user.name" size="sm" />
                                     </div>
                                 </div>
                             </UCard>

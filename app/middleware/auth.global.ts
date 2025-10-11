@@ -1,5 +1,3 @@
-import { authClient } from '~/lib/auth-client';
-
 const protectedRoutes = ['/lobby', '/game'];
 
 const isProtectedRoute = (path: string) => {
@@ -7,10 +5,11 @@ const isProtectedRoute = (path: string) => {
 };
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const { data: session } = await authClient.useSession(useFetch);
+    const { session, showAuthRequiredToast } = await useAuth();
 
     if (!session.value) {
         if (isProtectedRoute(to.path)) {
+            showAuthRequiredToast();
             return navigateTo('/sign-in');
         }
     } else {
