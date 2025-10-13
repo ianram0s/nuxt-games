@@ -12,4 +12,10 @@ export default defineNuxtConfig({
             { code: 'pt-br', name: 'Português (BR)', file: 'pt-br.json' },
         ],
     },
+    nitro: {
+        experimental: {
+            wasm: true,
+            websocket: true,
+        },
+    },
 });
