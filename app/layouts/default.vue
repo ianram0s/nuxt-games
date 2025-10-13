@@ -1,5 +1,13 @@
 <template>
-    <div class="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-950">
-        <slot />
+    <div
+        class="min-h-screen flex flex-col bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900"
+    >
+        <!-- Header -->
+        <LayoutHeader />
+
+        <!-- Main Content -->
+        <main class="flex-1 flex px-4 sm:px-6 lg:px-8 py-8">
+            <slot />
+        </main>
     </div>
 </template>

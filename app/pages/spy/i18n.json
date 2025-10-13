@@ -1,0 +1,62 @@
+{
+    "en": {
+        "hero": {
+            "title": "Word Spy",
+            "description": "Uncover the secret word through strategic questioning and deduction. Challenge your friends in this thrilling word-guessing game!"
+        },
+        "features": {
+            "deduction": {
+                "title": "Smart Deduction",
+                "description": "Use strategic questions to narrow down possibilities and uncover the secret word."
+            },
+            "multiplayer": {
+                "title": "Multiplayer Fun",
+                "description": "Play with friends and family in real-time multiplayer sessions."
+            },
+            "compete": {
+                "title": "Compete & Win",
+                "description": "Track your progress, earn achievements, and climb the leaderboards."
+            }
+        },
+        "cta": {
+            "startPlaying": "Start Playing",
+            "signInToPlay": "Sign In to Play",
+            "readyMessage": "Ready to start your game?",
+            "signInMessage": "Sign in to start playing and competing with friends!"
+        },
+        "meta": {
+            "title": "Word Spy - IanBytes.com",
+            "description": "A thrilling deduction game where you must identify the spy among your friends."
+        }
+    },
+    "pt-br": {
+        "hero": {
+            "title": "Espião de Palavras",
+            "description": "Descubra a palavra secreta através de perguntas estratégicas e dedução. Desafie seus amigos neste emocionante jogo de adivinhação!"
+        },
+        "features": {
+            "deduction": {
+                "title": "Dedução Inteligente",
+                "description": "Use perguntas estratégicas para reduzir as possibilidades e descobrir a palavra secreta."
+            },
+            "multiplayer": {
+                "title": "Diversão Multiplayer",
+                "description": "Jogue com amigos e família em sessões multiplayer em tempo real."
+            },
+            "compete": {
+                "title": "Compete e Vença",
+                "description": "Acompanhe seu progresso, ganhe conquistas e suba nas tabelas de classificação."
+            }
+        },
+        "cta": {
+            "startPlaying": "Começar a Jogar",
+            "signInToPlay": "Entre para Jogar",
+            "readyMessage": "Pronto para começar seu jogo?",
+            "signInMessage": "Entre para começar a jogar e competir com amigos!"
+        },
+        "meta": {
+            "title": "Word Spy - IanBytes.com",
+            "description": "Um emocionante jogo de dedução onde você deve identificar o espião entre seus amigos."
+        }
+    }
+}

@@ -44,43 +44,53 @@ const handleSignOut = async () => {
 </script>
 
 <template>
-    <header
-        class="flex justify-between items-center p-6 backdrop-blur-md bg-white/60 dark:bg-gray-900/60 border-b border-gray-200/20 dark:border-gray-700/20 sticky top-0 z-50"
+    <UHeader
+        :title="$t('app.name')"
+        :ui="{
+            root: 'backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-neutral-900/70 border-b border-neutral-200/60 dark:border-neutral-800/60 sticky top-0 z-50',
+            container: 'p-4 sm:p-6',
+            title: 'text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white',
+        }"
+        toggle-side="left"
+        mode="slideover"
     >
-        <div class="flex items-center gap-3">
-            <h1 class="text-2xl font-bold text-gray-900 dark:text-white">{{ $t('app.name') }}</h1>
-        </div>
-
-        <div class="flex items-center gap-4">
-            <LanguageSwitcher />
-            <UButton
-                v-if="!user"
-                @click="navigateToSignIn"
-                color="primary"
-                variant="soft"
-                :icon="isSigningIn ? 'i-heroicons-arrow-path' : 'i-heroicons-arrow-right-on-rectangle'"
-                :loading="isSigningIn"
-                :disabled="isSigningIn"
-                class="cursor-pointer"
-            >
-                {{ $t('common.signIn') }}
-            </UButton>
-            <div v-else class="flex items-center gap-3">
-                <UAvatar :src="user.image || undefined" :alt="user.name || 'User'" size="lg" />
-
+        <template #right>
+            <div class="flex items-center gap-4">
+                <LanguageSwitcher />
                 <UButton
-                    @click="handleSignOut"
-                    color="error"
+                    v-if="!user"
+                    @click="navigateToSignIn"
+                    color="primary"
                     variant="soft"
-                    size="sm"
-                    :icon="isSigningOut ? 'i-heroicons-arrow-path' : 'i-heroicons-arrow-right-on-rectangle'"
-                    :loading="isSigningOut"
-                    :disabled="isSigningOut"
-                    class="cursor-pointer"
+                    :icon="isSigningIn ? 'i-heroicons-arrow-path' : 'i-heroicons-arrow-right-on-rectangle'"
+                    :loading="isSigningIn"
+                    :disabled="isSigningIn"
+                    class="cursor-pointer rounded-xl"
                 >
-                    {{ $t('common.signOut') }}
+                    {{ $t('common.signIn') }}
                 </UButton>
+                <div v-else class="flex items-center gap-3">
+                    <UAvatar
+                        :src="user.image || undefined"
+                        :alt="user.name || 'User'"
+                        size="lg"
+                        class="ring-2 ring-primary/20"
+                    />
+
+                    <UButton
+                        @click="handleSignOut"
+                        color="error"
+                        variant="soft"
+                        size="sm"
+                        :icon="isSigningOut ? 'i-heroicons-arrow-path' : 'i-heroicons-arrow-right-on-rectangle'"
+                        :loading="isSigningOut"
+                        :disabled="isSigningOut"
+                        class="cursor-pointer rounded-xl"
+                    >
+                        {{ $t('common.signOut') }}
+                    </UButton>
+                </div>
             </div>
-        </div>
-    </header>
+        </template>
+    </UHeader>
 </template>

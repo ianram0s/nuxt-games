@@ -1,6 +1,6 @@
 {
     "app": {
-        "name": "Spy Game"
+        "name": "Hub de Jogos"
     },
     "common": {
         "signIn": "Entrar",
@@ -31,8 +31,5 @@
             "title": "Autenticação Necessária",
             "description": "Por favor, faça login para acessar esta página."
         }
-    },
-    "footer": {
-        "copyright": "© 2025 Spy Game - IanBytes.com. Todos os direitos reservados."
     }
 }

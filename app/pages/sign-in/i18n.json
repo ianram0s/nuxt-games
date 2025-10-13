@@ -1,0 +1,54 @@
+{
+    "en": {
+        "status": {
+            "signedIn": "You are signed in",
+            "signInPrompt": "Sign in to continue"
+        },
+        "alerts": {
+            "notAuthenticated": {
+                "title": "Not authenticated",
+                "description": "Please sign in with your Google account to continue."
+            },
+            "authenticated": {
+                "title": "Successfully authenticated",
+                "description": "You're signed in and ready to go!"
+            }
+        },
+        "actions": {
+            "continueWithGoogle": "Continue with Google"
+        },
+        "userInfo": {
+            "title": "User Information"
+        },
+        "meta": {
+            "title": "Sign In - Games Hub",
+            "description": "Sign in to Games Hub to access all available games and features."
+        }
+    },
+    "pt-br": {
+        "status": {
+            "signedIn": "Você está conectado",
+            "signInPrompt": "Entre para continuar"
+        },
+        "alerts": {
+            "notAuthenticated": {
+                "title": "Não autenticado",
+                "description": "Por favor, entre com sua conta Google para continuar."
+            },
+            "authenticated": {
+                "title": "Autenticado com sucesso",
+                "description": "Você está conectado e pronto para começar!"
+            }
+        },
+        "actions": {
+            "continueWithGoogle": "Continuar com Google"
+        },
+        "userInfo": {
+            "title": "Informações do Usuário"
+        },
+        "meta": {
+            "title": "Entrar - Hub de Jogos",
+            "description": "Entre no Hub de Jogos para acessar todos os jogos e recursos disponíveis."
+        }
+    }
+}

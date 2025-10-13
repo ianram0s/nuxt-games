@@ -1,0 +1,38 @@
+{
+    "en": {
+        "title": "Welcome to Games Hub",
+        "subtitle": "Discover and play amazing games",
+        "description": "A collection of fun and engaging games to challenge your mind and skills.",
+        "games": {
+            "title": "Available Games",
+            "spygame": {
+                "title": "Spy Game",
+                "description": "A thrilling deduction game where you must identify the spy among your friends.",
+                "playNow": "Play Now"
+            }
+        },
+        "comingSoon": "More games coming soon!",
+        "meta": {
+            "title": "Games Hub - IanBytes.com",
+            "description": "A collection of fun and engaging games to challenge your mind and skills."
+        }
+    },
+    "pt-br": {
+        "title": "Bem-vindo ao Hub de Jogos",
+        "subtitle": "Descubra e jogue jogos incríveis",
+        "description": "Uma coleção de jogos divertidos e envolventes para desafiar sua mente e habilidades.",
+        "games": {
+            "title": "Jogos Disponíveis",
+            "spygame": {
+                "title": "Jogo do Espião",
+                "description": "Um emocionante jogo de dedução onde você deve identificar o espião entre seus amigos.",
+                "playNow": "Jogar Agora"
+            }
+        },
+        "comingSoon": "Mais jogos em breve!",
+        "meta": {
+            "title": "Hub de Jogos - IanBytes.com",
+            "description": "Uma coleção de jogos divertidos e envolventes para desafiar sua mente e habilidades."
+        }
+    }
+}
