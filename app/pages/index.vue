@@ -1,10 +1,8 @@
 <i18n src="./i18n.json"></i18n>
 <script setup lang="ts">
-const { t } = useI18n();
-
 useHead({
-    title: t('meta.title'),
-    meta: [{ name: 'description', content: t('meta.description') }],
+    title: $t('meta.title'),
+    meta: [{ name: 'description', content: $t('meta.description') }],
 });
 
 const navigateToSpyGame = () => {
@@ -18,7 +16,7 @@ const navigateToSpyGame = () => {
             <!-- Games Section -->
             <div class="mb-16">
                 <h2 class="text-center text-3xl sm:text-4xl font-extrabold tracking-tight bg-clip-text">
-                    {{ t('games.title') }}
+                    {{ $t('games.title') }}
                 </h2>
 
                 <!-- Games Grid -->
@@ -35,10 +33,10 @@ const navigateToSpyGame = () => {
 
                         <div class="space-y-3">
                             <h3 class="text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white">
-                                {{ t('games.spygame.title') }}
+                                {{ $t('games.spygame.title') }}
                             </h3>
                             <p class="text-neutral-600 dark:text-neutral-300">
-                                {{ t('games.spygame.description') }}
+                                {{ $t('games.spygame.description') }}
                             </p>
                         </div>
 
@@ -51,7 +49,7 @@ const navigateToSpyGame = () => {
                                 icon="i-heroicons-arrow-right-on-rectangle"
                                 class="w-full cursor-pointer rounded-xl"
                             >
-                                {{ t('games.spygame.playNow') }}
+                                {{ $t('games.spygame.playNow') }}
                             </UButton>
                         </template>
                     </UCard>
@@ -66,7 +64,7 @@ const navigateToSpyGame = () => {
                                 class="w-14 h-14 text-neutral-400 dark:text-neutral-500 mx-auto mb-4"
                             />
                             <h3 class="text-lg sm:text-xl font-semibold text-neutral-500 dark:text-neutral-400">
-                                {{ t('comingSoon') }}
+                                {{ $t('comingSoon') }}
                             </h3>
                         </div>
                     </UCard>
@@ -80,7 +78,7 @@ const navigateToSpyGame = () => {
                                 class="w-14 h-14 text-neutral-400 dark:text-neutral-500 mx-auto mb-4"
                             />
                             <h3 class="text-lg sm:text-xl font-semibold text-neutral-500 dark:text-neutral-400">
-                                {{ t('comingSoon') }}
+                                {{ $t('comingSoon') }}
                             </h3>
                         </div>
                     </UCard>

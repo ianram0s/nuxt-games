@@ -5,15 +5,15 @@ const isProtectedRoute = (path: string) => {
 };
 
 export default defineNuxtRouteMiddleware(async (to, from) => {
-    const { session } = await useAuth();
+    const { session, fetchSession } = useAuth();
 
-    if (!session.value) {
-        if (isProtectedRoute(to.path)) {
-            return navigateTo('/sign-in');
-        }
-    } else {
-        if (to.path === '/sign-in') {
-            return navigateTo('/');
-        }
+    await fetchSession();
+
+    if (!session.value && isProtectedRoute(to.path)) {
+        return navigateTo('/sign-in');
+    }
+
+    if (session.value && to.path === '/sign-in') {
+        return navigateTo('/');
     }
 });

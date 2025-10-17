@@ -2,21 +2,57 @@ import type { NitroApp } from 'nitropack';
 import { Server as Engine } from 'engine.io';
 import { Server } from 'socket.io';
 import { defineEventHandler } from 'h3';
+import { auth } from '~~/server/lib/auth';
+import { playerService } from '~~/server/services/player.service';
+import { createSocketServer } from '~~/server/lib/socket';
+import type { User } from '~~/types';
+
+interface SocketData {
+    user: User;
+}
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
     const engine = new Engine();
-    const io = new Server();
+    const io = new Server<object, object, object, SocketData>();
 
     io.bind(engine);
 
-    io.on('connection', (socket) => {
-        // Setup socket listeners for all services
+    playerService.setIO(io);
 
-        socket.on('disconnect', () => {
-            // Handle user disconnection
-        });
-        socket.on('close', () => {
-            // Handle user disconnection
+    io.use(async (socket, next) => {
+        try {
+            const cookieHeader = socket.request.headers.cookie || '';
+
+            const session = await auth.api.getSession({
+                headers: new Headers({
+                    cookie: cookieHeader,
+                }),
+            });
+
+            if (!session?.user) {
+                return next(new Error('Authentication required'));
+            }
+
+            socket.data.user = session.user as User;
+            next();
+        } catch (error) {
+            next(new Error('Authentication failed'));
+        }
+    });
+
+    io.on('connection', (socket) => {
+        const user = socket.data.user;
+        const socketWrapper = createSocketServer(io, socket);
+
+        const existing = playerService.getPlayerConnection(user.id);
+        if (existing && existing.status === 'reconnecting') {
+            playerService.handleReconnection(socketWrapper, user);
+        } else {
+            playerService.handleConnection(socketWrapper, user);
+        }
+
+        socket.on('disconnect', (reason) => {
+            playerService.handleDisconnection(socket.id);
         });
     });
 

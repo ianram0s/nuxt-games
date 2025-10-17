@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { user, signOut } = await useAuth();
+const { user, signOut } = useAuth();
 const toast = useToast();
 
 const isSigningOut = ref(false);
@@ -26,6 +26,7 @@ const handleSignOut = async () => {
                 icon: 'i-heroicons-x-circle',
                 color: 'error',
             });
+
             return;
         }
 

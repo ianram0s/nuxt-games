@@ -1,47 +1,60 @@
-import { onMounted, onUnmounted } from 'vue';
-import { socketManager } from '~/lib/socket';
+import { socketManager } from '~/lib/socket-manager';
+import { playerServiceClient } from '~/services/player.service';
 
-export const useSocket = () => {
-    const isConnected = useState<boolean>('socket-connected', () => false);
+type UseSocketOptions = {
+    auto?: boolean;
+    lease?: boolean;
+};
 
-    const updateConnectionStatus = () => {
-        isConnected.value = socketManager.isConnected();
-    };
+export const useSocket = (options: UseSocketOptions = {}) => {
+    const { auto = false, lease = true } = options;
+    const { isLoggedIn } = useAuth();
+    const isConnected = useState<boolean>('socket-connected', () => socketManager.isConnected());
 
-    const onConnect = () => {
-        console.log('[useSocket] Socket connected');
-        updateConnectionStatus();
-    };
+    const bootstrapped = useState<boolean>('socket:bootstrapped', () => false);
+    if (import.meta.client && !bootstrapped.value) {
+        watch(
+            isLoggedIn,
+            (logged) => {
+                socketManager.setAuthenticated(!!logged);
+                if (!logged) playerServiceClient.cleanup();
+            },
+            { immediate: true },
+        );
 
-    const onDisconnect = (reason: string) => {
-        console.log('[useSocket] Socket disconnected:', reason);
-        updateConnectionStatus();
-    };
+        socketManager.onConnect(() => {
+            isConnected.value = true;
+            const socket = socketManager.getSocketWrapper();
+            if (socket) playerServiceClient.initialize(socket);
+        });
 
-    const onConnectError = (error: Error) => {
-        console.warn('[useSocket] Socket connection error:', error.message);
-        updateConnectionStatus();
-    };
+        socketManager.onDisconnect(() => {
+            isConnected.value = false;
+            playerServiceClient.cleanup();
+        });
 
-    onMounted(() => {
-        socketManager.ensureSocket();
-        updateConnectionStatus();
+        bootstrapped.value = true;
+    }
 
-        const socket = socketManager.getSocket();
-        socket?.on('connect', onConnect);
-        socket?.on('disconnect', onDisconnect);
-        socket?.on('connect_error', onConnectError);
-    });
+    if (lease) {
+        onMounted(() => {
+            socketManager.acquireLease();
+            socketManager.setAuthenticated(!!isLoggedIn.value);
+            if (auto && isLoggedIn.value) {
+                socketManager.connect();
+            }
+        });
 
-    onUnmounted(() => {
-        const socket = socketManager.getSocket();
-        socket?.off('connect', onConnect);
-        socket?.off('disconnect', onDisconnect);
-        socket?.off('connect_error', onConnectError);
-    });
+        onScopeDispose(() => {
+            socketManager.releaseLease();
+        });
+    }
 
     return {
         isConnected,
-        socket: socketManager,
+        connect: () => socketManager.connect(),
+        disconnect: () => socketManager.disconnect(),
+        onConnect: (callback: () => void) => socketManager.onConnect(callback),
+        onDisconnect: (callback: (reason?: string) => void) => socketManager.onDisconnect(callback),
     };
 };

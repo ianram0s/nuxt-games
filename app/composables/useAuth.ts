@@ -1,19 +1,58 @@
-import { authClient } from '~/lib/auth-client';
+import type { ClientOptions, InferSessionFromClient, InferUserFromClient } from 'better-auth';
+import { createAuthClient } from 'better-auth/vue';
+import { socketManager } from '~/lib/socket-manager';
 
-export const useAuth = async () => {
-    const { data: sessionData, error: sessionError, isPending } = await authClient.useSession(useFetch);
+export function useAuth() {
+    const url = useRequestURL();
+    const headers = import.meta.server ? useRequestHeaders() : undefined;
 
-    const session = computed(() => sessionData.value?.session || null);
-    const user = computed(() => sessionData.value?.user || null);
-    const isLoggedIn = computed(() => !!sessionData.value);
+    const authClient = createAuthClient({
+        baseURL: url.origin,
+        fetchOptions: {
+            headers,
+        },
+    });
+
+    const session = useState<InferSessionFromClient<ClientOptions> | null>('auth:session', () => null);
+    const user = useState<InferUserFromClient<ClientOptions> | null>('auth:user', () => null);
+    const sessionFetching = import.meta.server ? ref(false) : useState('auth:sessionFetching', () => false);
+    const sessionError = useState<string | null>('auth:sessionError', () => null);
+
+    const fetchSession = async () => {
+        if (sessionFetching.value) return;
+        sessionFetching.value = true;
+
+        const { data, error } = await authClient.getSession();
+        session.value = data?.session || null;
+        user.value = data?.user || null;
+        sessionError.value = error?.message || null;
+
+        sessionFetching.value = false;
+    };
+
+    if (import.meta.client) {
+        authClient.$store.listen('$sessionSignal', async (signal) => {
+            if (!signal) return;
+
+            await fetchSession();
+        });
+    }
+
+    const signOut: typeof authClient.signOut = async (options) => {
+        socketManager.block();
+
+        return await authClient.signOut(options);
+    };
 
     return {
         session,
         user,
-        isPending,
-        isLoggedIn,
+        isPending: sessionFetching,
+        isLoggedIn: computed(() => !!session.value),
         sessionError,
         signIn: authClient.signIn,
-        signOut: authClient.signOut,
+        signOut,
+        fetchSession,
+        client: authClient,
     };
-};
+}

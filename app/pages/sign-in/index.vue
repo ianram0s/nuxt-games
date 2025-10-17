@@ -1,13 +1,12 @@
 <i18n src="./i18n.json"></i18n>
 
 <script setup lang="ts">
-const { user, signIn, signOut } = await useAuth();
-const { t } = useI18n();
+const { user, signIn, signOut } = useAuth();
 const toast = useToast();
 
 useHead({
-    title: t('meta.title'),
-    meta: [{ name: 'description', content: t('meta.description') }],
+    title: $t('meta.title'),
+    meta: [{ name: 'description', content: $t('meta.description') }],
 });
 
 const isLoading = ref(false);
@@ -68,7 +67,7 @@ const handleSignOut = async () => {
                         </div>
                         <h1 class="text-2xl font-bold">{{ $t('common.welcome') }}</h1>
                         <p class="text-sm text-neutral-500 dark:text-neutral-400">
-                            {{ user ? t('status.signedIn') : t('status.signInPrompt') }}
+                            {{ user ? $t('status.signedIn') : $t('status.signInPrompt') }}
                         </p>
                     </div>
                 </template>
@@ -80,8 +79,8 @@ const handleSignOut = async () => {
                             icon="i-heroicons-information-circle"
                             color="neutral"
                             variant="soft"
-                            :title="t('alerts.notAuthenticated.title')"
-                            :description="t('alerts.notAuthenticated.description')"
+                            :title="$t('alerts.notAuthenticated.title')"
+                            :description="$t('alerts.notAuthenticated.description')"
                         />
 
                         <UButton
@@ -94,7 +93,7 @@ const handleSignOut = async () => {
                             :loading="isLoading"
                             class="cursor-pointer rounded-xl"
                         >
-                            {{ t('actions.continueWithGoogle') }}
+                            {{ $t('actions.continueWithGoogle') }}
                         </UButton>
                     </div>
                 </div>

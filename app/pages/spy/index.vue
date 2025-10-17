@@ -1,12 +1,11 @@
 <i18n src="./i18n.json"></i18n>
 
 <script setup lang="ts">
-const { isLoggedIn } = await useAuth();
-const { t } = useI18n();
+const { isLoggedIn } = useAuth();
 
 useHead({
-    title: t('meta.title'),
-    meta: [{ name: 'description', content: t('meta.description') }],
+    title: $t('meta.title'),
+    meta: [{ name: 'description', content: $t('meta.description') }],
 });
 
 const navigateToSignIn = () => {
@@ -14,8 +13,7 @@ const navigateToSignIn = () => {
 };
 
 const navigateToGame = () => {
-    // TODO: Navigate to game when implemented
-    console.log('Navigate to game');
+    navigateTo('/spy/lobby');
 };
 </script>
 
@@ -23,9 +21,9 @@ const navigateToGame = () => {
     <div class="flex-1 w-full flex items-center justify-center px-6">
         <div class="text-center max-w-4xl mx-auto">
             <div class="mb-8">
-                <h2 class="text-6xl font-bold text-gray-900 dark:text-white mb-4">{{ t('hero.title') }}</h2>
+                <h2 class="text-6xl font-bold text-gray-900 dark:text-white mb-4">{{ $t('hero.title') }}</h2>
                 <p class="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-                    {{ t('hero.description') }}
+                    {{ $t('hero.description') }}
                 </p>
             </div>
 
@@ -38,10 +36,10 @@ const navigateToGame = () => {
                         <UIcon name="i-heroicons-light-bulb" class="w-8 h-8 text-blue-600 dark:text-blue-400" />
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ t('features.deduction.title') }}
+                        {{ $t('features.deduction.title') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ t('features.deduction.description') }}
+                        {{ $t('features.deduction.description') }}
                     </p>
                 </div>
 
@@ -52,10 +50,10 @@ const navigateToGame = () => {
                         <UIcon name="i-heroicons-users" class="w-8 h-8 text-green-600 dark:text-green-400" />
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ t('features.multiplayer.title') }}
+                        {{ $t('features.multiplayer.title') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ t('features.multiplayer.description') }}
+                        {{ $t('features.multiplayer.description') }}
                     </p>
                 </div>
 
@@ -66,10 +64,10 @@ const navigateToGame = () => {
                         <UIcon name="i-heroicons-trophy" class="w-8 h-8 text-purple-600 dark:text-purple-400" />
                     </div>
                     <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
-                        {{ t('features.compete.title') }}
+                        {{ $t('features.compete.title') }}
                     </h3>
                     <p class="text-gray-600 dark:text-gray-300">
-                        {{ t('features.compete.description') }}
+                        {{ $t('features.compete.description') }}
                     </p>
                 </div>
             </div>
@@ -84,7 +82,7 @@ const navigateToGame = () => {
                     icon="i-heroicons-play"
                     class="px-8 py-4 text-lg cursor-pointer"
                 >
-                    {{ t('cta.startPlaying') }}
+                    {{ $t('cta.startPlaying') }}
                 </UButton>
                 <UButton
                     v-else
@@ -94,11 +92,11 @@ const navigateToGame = () => {
                     icon="i-heroicons-arrow-right-on-rectangle"
                     class="px-8 py-4 text-lg cursor-pointer"
                 >
-                    {{ t('cta.signInToPlay') }}
+                    {{ $t('cta.signInToPlay') }}
                 </UButton>
 
                 <p class="text-sm text-gray-500 dark:text-gray-400">
-                    {{ isLoggedIn ? t('cta.readyMessage') : t('cta.signInMessage') }}
+                    {{ isLoggedIn ? $t('cta.readyMessage') : $t('cta.signInMessage') }}
                 </p>
             </div>
         </div>
