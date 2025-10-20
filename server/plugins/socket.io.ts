@@ -2,22 +2,37 @@ import type { NitroApp } from 'nitropack';
 import { Server as Engine } from 'engine.io';
 import { Server } from 'socket.io';
 import { defineEventHandler } from 'h3';
+import { auth } from '../lib/auth';
+import { playerService } from '../services';
+import type { User, IoServer } from '~~/shared/types';
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
     const engine = new Engine();
-    const io = new Server();
+    const io: IoServer = new Server();
 
     io.bind(engine);
 
-    io.on('connection', (socket) => {
-        // Setup socket listeners for all services
+    playerService.setup(io);
 
-        socket.on('disconnect', () => {
-            // Handle user disconnection
-        });
-        socket.on('close', () => {
-            // Handle user disconnection
-        });
+    io.use(async (socket, next) => {
+        try {
+            const cookieHeader = socket.request.headers.cookie || '';
+
+            const session = await auth.api.getSession({
+                headers: new Headers({
+                    cookie: cookieHeader,
+                }),
+            });
+
+            if (!session?.user) {
+                return next(new Error('Authentication required'));
+            }
+
+            socket.data.user = session.user as User;
+            next();
+        } catch (error) {
+            next(new Error('Authentication failed'));
+        }
     });
 
     nitroApp.router.use(

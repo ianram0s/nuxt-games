@@ -15,7 +15,7 @@ const isLoading = ref(false);
 const handleGoogleSignIn = async () => {
     isLoading.value = true;
 
-    const { error } = await signIn.social({
+    const { error } = await signIn({
         provider: 'google',
     });
 

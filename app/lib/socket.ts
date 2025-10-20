@@ -1,13 +1,17 @@
-import type { Socket } from 'socket.io-client';
-import { io } from 'socket.io-client';
+import { io, type Socket } from 'socket.io-client';
+import type { ServerToClientEvents, ClientToServerEvents } from '~~/shared/types/events';
 
 class SocketManager {
     private static instance: SocketManager;
-    private socket: Socket | null = null;
-    private clientId: string | null = null;
+    private socket: Socket<ServerToClientEvents, ClientToServerEvents>;
     private blocked: boolean = false;
 
-    private constructor() {}
+    private constructor() {
+        this.socket = io({
+            autoConnect: false,
+            reconnection: true,
+        }) as Socket<ServerToClientEvents, ClientToServerEvents>;
+    }
 
     /**
      * Gets the instance of the SocketManager
@@ -21,21 +25,11 @@ class SocketManager {
     }
 
     /**
-     * Gets the socket instance
+     * Gets the typed socket instance
      * @returns
      */
-    public getSocket(): Socket | null {
+    public getSocket() {
         return this.socket;
-    }
-
-    /**
-     * Sets the client identifier used for authenticating the socket connection
-     */
-    public setClientId(clientId: string): void {
-        this.clientId = clientId;
-        if (this.socket) {
-            this.socket.auth = { clientId };
-        }
     }
 
     /**
@@ -43,7 +37,7 @@ class SocketManager {
      * @returns
      */
     public isConnected(): boolean {
-        return !!this.socket?.connected;
+        return this.socket.connected;
     }
 
     /**
@@ -53,23 +47,11 @@ class SocketManager {
         if (this.blocked) {
             return;
         }
-        if (!import.meta.client) {
+        if (this.socket.connected) {
             return;
         }
-        this.ensureSocket();
-        if (this.socket && this.socket.disconnected) {
+        if (this.socket.disconnected) {
             this.socket.connect();
-        }
-    }
-
-    /**
-     * Blocks the socket from reconnecting
-     */
-    public block(): void {
-        this.blocked = true;
-        if (this.socket) {
-            this.socket.io.opts.reconnection = false;
-            this.socket.disconnect();
         }
     }
 
@@ -77,58 +59,26 @@ class SocketManager {
      * Disconnects the socket
      */
     public disconnect(): void {
-        this.socket?.disconnect();
+        this.socket.disconnect();
     }
 
     /**
-     * Waits for the socket to connect
-     * @param timeoutMs
-     * @returns
+     * Blocks the socket from reconnecting
      */
-    public async waitForConnection(timeoutMs: number = 3000): Promise<boolean> {
-        return new Promise((resolve) => {
-            if (this.socket?.connected) {
-                resolve(true);
-                return;
-            }
-
-            const onConnect = () => {
-                this.socket?.off('connect', onConnect);
-                resolve(true);
-            };
-
-            this.socket?.on('connect', onConnect);
-
-            setTimeout(() => {
-                this.socket?.off('connect', onConnect);
-                resolve(false);
-            }, timeoutMs);
-        });
+    public block(): void {
+        this.blocked = true;
+        this.socket.io.opts.reconnection = false;
+        this.socket.disconnect();
     }
 
     /**
-     * Ensure a socket instance exists. Safe to call multiple times; client-only.
+     * Unblocks the socket to allow reconnecting
      */
-    public ensureSocket(): void {
-        if (!import.meta.client) {
-            return;
-        }
-        if (this.socket) {
-            return;
-        }
-        const auth = this.clientId ? { clientId: this.clientId } : undefined;
-        this.socket = io({ autoConnect: false, reconnection: true, auth });
-
-        this.socket.on('connect', () => {
-            console.log('Socket connected');
-        });
-        this.socket.on('disconnect', (reason) => {
-            console.log('Socket disconnected:', reason);
-        });
-        this.socket.on('connect_error', (error) => {
-            console.warn('Socket connection error:', error.message);
-        });
+    public unblock(): void {
+        this.blocked = false;
+        this.socket.io.opts.reconnection = true;
     }
 }
 
 export const socketManager = SocketManager.getInstance();
+export const socket = socketManager.getSocket();
