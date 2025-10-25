@@ -19,6 +19,7 @@
         "db:studio": "drizzle-kit studio"
     },
     "dependencies": {
+        "@iconify-json/heroicons": "^1.2.3",
         "@nuxt/eslint": "1.9.0",
         "@nuxt/ui": "4.0.1",
         "@nuxtjs/i18n": "10.1.0",
@@ -31,6 +32,7 @@
         "socket.io": "^4.8.1",
         "socket.io-client": "^4.8.1",
         "typescript": "^5.6.3",
+        "uuid": "^13.0.0",
         "vue": "^3.5.22",
         "vue-router": "^4.5.1"
     },

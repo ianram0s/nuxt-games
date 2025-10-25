@@ -9,6 +9,11 @@
                 "title": "Spy Game",
                 "description": "A thrilling deduction game where you must identify the spy among your friends.",
                 "playNow": "Play Now"
+            },
+            "clickrace": {
+                "title": "Click Race",
+                "description": "Test your clicking speed and reflexes in this fast-paced multiplayer competition.",
+                "playNow": "Play Now"
             }
         },
         "comingSoon": "More games coming soon!",
@@ -26,6 +31,11 @@
             "spygame": {
                 "title": "Jogo do Espião",
                 "description": "Um emocionante jogo de dedução onde você deve identificar o espião entre seus amigos.",
+                "playNow": "Jogar Agora"
+            },
+            "clickrace": {
+                "title": "Corrida de Cliques",
+                "description": "Teste sua velocidade de cliques e reflexos nesta competição multiplayer acelerada.",
                 "playNow": "Jogar Agora"
             }
         },

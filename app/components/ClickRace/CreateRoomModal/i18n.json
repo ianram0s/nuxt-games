@@ -1,0 +1,38 @@
+{
+    "en": {
+        "title": "Create New Room",
+        "subtitle": "Set up your game room details",
+        "nameLabel": "Room Name",
+        "namePlaceholder": "Enter room name",
+        "passwordLabel": "Password (Optional)",
+        "passwordPlaceholder": "Enter password (optional)",
+        "cancel": "Cancel",
+        "create": "Create Room",
+        "creating": "Creating...",
+        "nameRequired": "Room name is required",
+        "createFailed": "Failed to create room",
+        "unexpectedError": "An unexpected error occurred",
+        "errors": {
+            "alreadyHosting": "You are already hosting a room",
+            "alreadyExists": "A room with this name already exists"
+        }
+    },
+    "pt-br": {
+        "title": "Criar Nova Sala",
+        "subtitle": "Configure os detalhes da sua sala de jogo",
+        "nameLabel": "Nome da Sala",
+        "namePlaceholder": "Digite o nome da sala",
+        "passwordLabel": "Senha (Opcional)",
+        "passwordPlaceholder": "Digite a senha (opcional)",
+        "cancel": "Cancelar",
+        "create": "Criar Sala",
+        "creating": "Criando...",
+        "nameRequired": "Nome da sala é obrigatório",
+        "createFailed": "Falha ao criar sala",
+        "unexpectedError": "Ocorreu um erro inesperado",
+        "errors": {
+            "alreadyHosting": "Você já está hospedando uma sala",
+            "alreadyExists": "Já existe uma sala com este nome"
+        }
+    }
+}

@@ -1,0 +1,38 @@
+{
+    "en": {
+        "title": "Enter Room Password",
+        "subtitle": "This room is password protected",
+        "passwordLabel": "Password",
+        "passwordPlaceholder": "Enter room password",
+        "cancel": "Cancel",
+        "join": "Join Room",
+        "joining": "Joining...",
+        "passwordRequired": "Password is required",
+        "joinFailed": "Failed to join room",
+        "unexpectedError": "An unexpected error occurred",
+        "errors": {
+            "roomNotFound": "Room not found",
+            "invalidPassword": "Invalid password",
+            "alreadyInRoom": "You are already in this room",
+            "roomFull": "Room is full"
+        }
+    },
+    "pt-br": {
+        "title": "Digite a Senha",
+        "subtitle": "Esta sala é protegida por senha",
+        "passwordLabel": "Senha",
+        "passwordPlaceholder": "Digite a senha da sala",
+        "cancel": "Cancelar",
+        "join": "Entrar na Sala",
+        "joining": "Entrando...",
+        "passwordRequired": "Senha é obrigatória",
+        "joinFailed": "Falha ao entrar na sala",
+        "unexpectedError": "Ocorreu um erro inesperado",
+        "errors": {
+            "roomNotFound": "Sala não encontrada",
+            "invalidPassword": "Senha inválida",
+            "alreadyInRoom": "Você já está nesta sala",
+            "roomFull": "Sala está cheia"
+        }
+    }
+}

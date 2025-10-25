@@ -3,8 +3,9 @@ import { Server as Engine } from 'engine.io';
 import { Server } from 'socket.io';
 import { defineEventHandler } from 'h3';
 import { auth } from '../lib/auth';
-import { playerService } from '../services';
+import { clickRaceService } from '../services';
 import type { User, IoServer } from '~~/shared/types';
+import { logger } from '~~/shared/lib/logger';
 
 export default defineNitroPlugin((nitroApp: NitroApp) => {
     const engine = new Engine();
@@ -12,7 +13,7 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
 
     io.bind(engine);
 
-    playerService.setup(io);
+    const userConnections = new Map<string, string>(); // userId -> socketId
 
     io.use(async (socket, next) => {
         try {
@@ -29,11 +30,38 @@ export default defineNitroPlugin((nitroApp: NitroApp) => {
             }
 
             socket.data.user = session.user as User;
+
+            const userId = session.user.id;
+            const existingSocketId = userConnections.get(userId);
+
+            if (existingSocketId && existingSocketId !== socket.id) {
+                logger.debug(
+                    `[SocketIO] ${session.user.name} already connected - disconnecting old socket (#${existingSocketId})`,
+                );
+
+                const oldSocket = io.sockets.sockets.get(existingSocketId);
+                if (oldSocket) {
+                    oldSocket.disconnect(true);
+                }
+            }
+
+            userConnections.set(userId, socket.id);
             next();
         } catch (error) {
             next(new Error('Authentication failed'));
         }
     });
+
+    io.on('connection', (socket) => {
+        socket.on('disconnect', () => {
+            const userId = socket.data.user?.id;
+            if (userId && userConnections.get(userId) === socket.id) {
+                userConnections.delete(userId);
+            }
+        });
+    });
+
+    clickRaceService.setup(io);
 
     nitroApp.router.use(
         '/socket.io/',

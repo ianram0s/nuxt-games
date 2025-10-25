@@ -1,6 +1,9 @@
 const protectedRoutes = ['/lobby', '/game'];
 
 const isProtectedRoute = (path: string) => {
+    if (protectedRoutes.some((route) => path.includes(route))) {
+        return true;
+    }
     return protectedRoutes.includes(path);
 };
 

@@ -1,3 +1,3 @@
 export * from '../../database/schemas';
-export * from './player';
-export * from './events';
+export * from './socket';
+export * from './games';

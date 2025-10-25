@@ -1,0 +1,62 @@
+{
+    "en": {
+        "hero": {
+            "title": "Click Race",
+            "description": "Test your clicking speed and reflexes in this fast-paced multiplayer competition. Click as fast as you can and beat your opponents!"
+        },
+        "features": {
+            "speed": {
+                "title": "Lightning Speed",
+                "description": "Challenge your clicking speed and reaction time in intense racing competitions."
+            },
+            "multiplayer": {
+                "title": "Real-time Racing",
+                "description": "Compete against other players in live multiplayer click racing sessions."
+            },
+            "compete": {
+                "title": "Leaderboards",
+                "description": "Track your best scores, earn achievements, and climb the global leaderboards."
+            }
+        },
+        "cta": {
+            "startPlaying": "Start Racing",
+            "signInToPlay": "Sign In to Race",
+            "readyMessage": "Ready to test your clicking speed?",
+            "signInMessage": "Sign in to start racing and competing with players worldwide!"
+        },
+        "meta": {
+            "title": "Click Race - IanBytes.com",
+            "description": "A fast-paced clicking competition game where speed and reflexes determine the winner."
+        }
+    },
+    "pt-br": {
+        "hero": {
+            "title": "Corrida de Cliques",
+            "description": "Teste sua velocidade de cliques e reflexos nesta competição multiplayer acelerada. Clique o mais rápido que puder e vença seus oponentes!"
+        },
+        "features": {
+            "speed": {
+                "title": "Velocidade Relâmpago",
+                "description": "Desafie sua velocidade de cliques e tempo de reação em competições intensas de corrida."
+            },
+            "multiplayer": {
+                "title": "Corrida em Tempo Real",
+                "description": "Compete contra outros jogadores em sessões multiplayer ao vivo de corrida de cliques."
+            },
+            "compete": {
+                "title": "Tabelas de Classificação",
+                "description": "Acompanhe suas melhores pontuações, ganhe conquistas e suba nas tabelas de classificação globais."
+            }
+        },
+        "cta": {
+            "startPlaying": "Começar a Correr",
+            "signInToPlay": "Entre para Correr",
+            "readyMessage": "Pronto para testar sua velocidade de cliques?",
+            "signInMessage": "Entre para começar a correr e competir com jogadores do mundo todo!"
+        },
+        "meta": {
+            "title": "Corrida de Cliques - IanBytes.com",
+            "description": "Um jogo de competição de cliques acelerado onde velocidade e reflexos determinam o vencedor."
+        }
+    }
+}

@@ -1,0 +1,102 @@
+{
+    "en": {
+        "meta": {
+            "title": "Lobby - Click Race Game",
+            "description": "Join or create click race game rooms"
+        },
+        "title": "Game Lobby",
+        "welcome": "Welcome to the Click Race Game Lobby!",
+        "subtitle": "Choose a room to join or create a new one to start playing.",
+        "createRoom": {
+            "title": "Room Management",
+            "subtitle": "Start a new game room for players to join",
+            "button": "Create Room",
+            "modal": {
+                "title": "Create New Room",
+                "subtitle": "Set up your game room details",
+                "nameLabel": "Room Name",
+                "namePlaceholder": "Enter room name",
+                "passwordLabel": "Password (Optional)",
+                "passwordPlaceholder": "Enter password (optional)",
+                "cancel": "Cancel",
+                "create": "Create Room",
+                "creating": "Creating...",
+                "nameRequired": "Room name is required"
+            }
+        },
+        "roomList": {
+            "title": "Available Rooms",
+            "empty": "No game rooms available. Create the first one!",
+            "loading": "Loading rooms...",
+            "playerCount": "players",
+            "passwordProtected": "Password protected",
+            "yourRoom": "Your room",
+            "joinButton": "Join Room",
+            "status": {
+                "waiting": "Waiting",
+                "playing": "Playing",
+                "finished": "Finished"
+            }
+        },
+        "errors": {
+            "connectionFailed": "Failed to connect to game server",
+            "roomCreationFailed": "Failed to create room",
+            "roomJoinFailed": "Failed to join room",
+            "invalidPassword": "Invalid password",
+            "roomFull": "Room is full",
+            "roomNotFound": "Room not found",
+            "socketDisconnected": "You have been disconnected",
+            "socketDisconnectedDescription": "Connection to the game server was lost. Please refresh the page to reconnect."
+        }
+    },
+    "pt-br": {
+        "meta": {
+            "title": "Lobby - Corrida de Cliques",
+            "description": "Entre ou crie salas de corrida de cliques"
+        },
+        "title": "Lobby do Jogo",
+        "welcome": "Bem-vindo ao Lobby do Click Race Game!",
+        "subtitle": "Escolha uma sala para entrar ou crie uma nova para começar a jogar.",
+        "createRoom": {
+            "title": "Gerenciamento de Salas",
+            "subtitle": "Inicie uma nova sala de jogo para jogadores entrarem",
+            "button": "Criar Sala",
+            "modal": {
+                "title": "Criar Nova Sala",
+                "subtitle": "Configure os detalhes da sua sala de jogo",
+                "nameLabel": "Nome da Sala",
+                "namePlaceholder": "Digite o nome da sala",
+                "passwordLabel": "Senha (Opcional)",
+                "passwordPlaceholder": "Digite a senha (opcional)",
+                "cancel": "Cancelar",
+                "create": "Criar Sala",
+                "creating": "Criando...",
+                "nameRequired": "Nome da sala é obrigatório"
+            }
+        },
+        "roomList": {
+            "title": "Salas Disponíveis",
+            "empty": "Nenhuma sala de jogo disponível. Crie a primeira!",
+            "loading": "Carregando salas...",
+            "playerCount": "jogadores",
+            "passwordProtected": "Protegida por senha",
+            "yourRoom": "Sua sala",
+            "joinButton": "Entrar na Sala",
+            "status": {
+                "waiting": "Aguardando",
+                "playing": "Jogando",
+                "finished": "Finalizada"
+            }
+        },
+        "errors": {
+            "connectionFailed": "Falha ao conectar ao servidor do jogo",
+            "roomCreationFailed": "Falha ao criar sala",
+            "roomJoinFailed": "Falha ao entrar na sala",
+            "invalidPassword": "Senha inválida",
+            "roomFull": "Sala cheia",
+            "roomNotFound": "Sala não encontrada",
+            "socketDisconnected": "Você foi desconectado",
+            "socketDisconnectedDescription": "A conexão com o servidor do jogo foi perdida. Por favor, atualize a página para reconectar."
+        }
+    }
+}

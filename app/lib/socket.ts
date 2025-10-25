@@ -1,15 +1,14 @@
 import { io, type Socket } from 'socket.io-client';
-import type { ServerToClientEvents, ClientToServerEvents } from '~~/shared/types/events';
+import type { ServerToClientEvents, ClientToServerEvents } from '~~/shared/types';
 
 class SocketManager {
     private static instance: SocketManager;
     private socket: Socket<ServerToClientEvents, ClientToServerEvents>;
-    private blocked: boolean = false;
 
     private constructor() {
         this.socket = io({
             autoConnect: false,
-            reconnection: true,
+            reconnection: false,
         }) as Socket<ServerToClientEvents, ClientToServerEvents>;
     }
 
@@ -44,9 +43,6 @@ class SocketManager {
      * Connects the socket
      */
     public connect(): void {
-        if (this.blocked) {
-            return;
-        }
         if (this.socket.connected) {
             return;
         }
@@ -60,23 +56,6 @@ class SocketManager {
      */
     public disconnect(): void {
         this.socket.disconnect();
-    }
-
-    /**
-     * Blocks the socket from reconnecting
-     */
-    public block(): void {
-        this.blocked = true;
-        this.socket.io.opts.reconnection = false;
-        this.socket.disconnect();
-    }
-
-    /**
-     * Unblocks the socket to allow reconnecting
-     */
-    public unblock(): void {
-        this.blocked = false;
-        this.socket.io.opts.reconnection = true;
     }
 }
 

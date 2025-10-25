@@ -1,1 +1,1 @@
-export * from './player.service';
+export * from './clickrace.service';
