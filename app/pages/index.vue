@@ -65,9 +65,7 @@ const navigateToClickRaceGame = () => {
                         class="rounded-2xl overflow-hidden shadow-lg ring-1 ring-neutral-950/5 dark:ring-white/10 transition-transform duration-300 hover:-translate-y-1"
                     >
                         <template #header>
-                            <div
-                                class="h-40 sm:h-48 flex items-center justify-center bg-gradient-to-br from-red-500 to-orange-500"
-                            >
+                            <div class="h-40 sm:h-48 flex items-center justify-center">
                                 <UIcon
                                     name="i-heroicons-cursor-arrow-rays"
                                     class="w-16 h-16 sm:w-20 sm:h-20 text-white"
@@ -90,7 +88,7 @@ const navigateToClickRaceGame = () => {
                                 color="primary"
                                 size="lg"
                                 variant="soft"
-                                icon="i-heroicons-cursor-arrow-rays"
+                                icon="i-heroicons-arrow-right-on-rectangle"
                                 class="w-full cursor-pointer rounded-xl"
                             >
                                 {{ t('games.clickrace.playNow') }}

@@ -31,7 +31,7 @@
     },
     "pt-br": {
         "hero": {
-            "title": "Espião de Palavras",
+            "title": "Jogo do Espião",
             "description": "Descubra a palavra secreta através de perguntas estratégicas e dedução. Desafie seus amigos neste emocionante jogo de adivinhação!"
         },
         "features": {
@@ -55,7 +55,7 @@
             "signInMessage": "Entre para começar a jogar e competir com amigos!"
         },
         "meta": {
-            "title": "Word Spy - IanBytes.com",
+            "title": "Jogo do Espião - IanBytes.com",
             "description": "Um emocionante jogo de dedução onde você deve identificar o espião entre seus amigos."
         }
     }

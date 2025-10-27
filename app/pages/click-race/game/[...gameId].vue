@@ -260,25 +260,13 @@ watch(isConnected, (connected, wasConnected) => {
     <div class="flex-1 w-full flex items-center justify-center px-6">
         <!-- Loading Spinner -->
         <div v-if="isLoading" class="text-center">
-            <div class="flex flex-col items-center justify-center space-y-4">
-                <svg class="animate-spin h-12 w-12 text-blue-500" viewBox="0 0 24 24">
-                    <circle
-                        class="opacity-25"
-                        cx="12"
-                        cy="12"
-                        r="10"
-                        stroke="currentColor"
-                        stroke-width="4"
-                        fill="none"
-                    />
-                    <path
-                        class="opacity-75"
-                        fill="currentColor"
-                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                </svg>
-                <p class="text-neutral-400">{{ $t('ui.loadingRoom') }}</p>
-            </div>
+            <LoadingSpinner
+                size="xl"
+                color="blue"
+                :text="$t('ui.loadingRoom')"
+                container-class="flex-col space-y-4"
+                text-class="text-neutral-400"
+            />
         </div>
 
         <!-- Game Content -->
@@ -322,7 +310,7 @@ watch(isConnected, (connected, wasConnected) => {
                             room?.status !== 'playing' ||
                             connectedPlayers.find((p) => p.userId === user?.id)?.role === 'spectator'
                         "
-                        class="w-32 h-32 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed transition-colors flex items-center justify-center text-white font-bold text-xl"
+                        class="w-32 h-32 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed transition-colors flex items-center justify-center text-white font-bold text-xl cursor-pointer"
                     >
                         {{ $t('ui.click') }}
                     </button>
@@ -337,7 +325,7 @@ watch(isConnected, (connected, wasConnected) => {
                         "
                         @click="toggleReady"
                         :class="[
-                            'px-6 py-2 rounded-lg transition-colors',
+                            'px-6 py-2 rounded-lg transition-colors cursor-pointer',
                             connectedPlayers.find((p) => p.userId === user?.id)?.isReady
                                 ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
                                 : 'bg-green-600 hover:bg-green-700 text-white',
@@ -357,14 +345,14 @@ watch(isConnected, (connected, wasConnected) => {
                             !connectedPlayers.filter((p) => p.role === 'player').every((p) => p.isReady) ||
                             connectedPlayers.filter((p) => p.role === 'player').length < 2
                         "
-                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors"
+                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors cursor-pointer"
                     >
                         {{ $t('ui.startGame') }}
                     </button>
 
                     <button
                         @click="leaveGame"
-                        class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors"
+                        class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors cursor-pointer"
                     >
                         {{ $t('ui.leaveGame') }}
                     </button>

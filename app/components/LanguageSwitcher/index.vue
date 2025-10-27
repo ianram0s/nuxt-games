@@ -14,6 +14,12 @@ const items = computed<DropdownMenuItem[][]>(() => [
 
 <template>
     <UDropdownMenu :items="items" :ui="{ content: 'min-w-40' }">
-        <UButton icon="i-heroicons-language" color="neutral" variant="ghost" aria-label="Switch language" />
+        <UButton
+            icon="i-heroicons-language"
+            color="neutral"
+            variant="ghost"
+            aria-label="Switch language"
+            class="cursor-pointer"
+        />
     </UDropdownMenu>
 </template>

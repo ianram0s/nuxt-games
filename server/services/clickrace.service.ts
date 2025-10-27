@@ -1,7 +1,6 @@
 import { ClientClickRaceRoom, CreateClickRaceRoomData, ServerClickRaceRoom, ClickRacePlayer } from '~~/shared/types';
 import type { SocketResponse, IoServer, IoSocket } from '~~/shared/types';
 import { v4 as uuidv4 } from 'uuid';
-import { logger } from '~~/shared/lib/logger';
 
 class ClickRaceService {
     private static instance: ClickRaceService;
@@ -25,6 +24,14 @@ class ClickRaceService {
     }
 
     private createRoom(user: User, data: CreateClickRaceRoomData): SocketResponse<{ roomId: string }> {
+        if (!data.name || !data.name.trim()) {
+            return { success: false, error: 'nameRequired' };
+        }
+
+        if (data.name.trim().length > 16) {
+            return { success: false, error: 'nameTooLong' };
+        }
+
         const existingHostRoom = Array.from(this.rooms.values()).find((room) => room.hostId === user.id);
         if (existingHostRoom) {
             return { success: false, error: 'alreadyHosting' };
@@ -116,6 +123,11 @@ class ClickRaceService {
             room.players.delete(user.id);
             room.playerCount--;
             socket.leave(`clickRace:room:${gameId}`);
+
+            if (room.status === 'playing' && room.playerCount === 1) {
+                this.endGame(gameId);
+                return { success: true };
+            }
 
             if (isHost) {
                 if (room.playerCount === 0) {

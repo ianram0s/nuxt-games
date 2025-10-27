@@ -76,25 +76,7 @@ watch(isConnected, (connected, wasConnected) => {
         <!-- Loading State - Show only when socket is connecting -->
         <div v-if="!isConnected" class="mx-auto w-full max-w-4xl flex flex-col items-center justify-center">
             <div class="flex flex-col items-center gap-4">
-                <div class="flex items-center gap-3 text-neutral-400">
-                    <svg class="animate-spin h-8 w-8" viewBox="0 0 24 24">
-                        <circle
-                            class="opacity-25"
-                            cx="12"
-                            cy="12"
-                            r="10"
-                            stroke="currentColor"
-                            stroke-width="4"
-                            fill="none"
-                        />
-                        <path
-                            class="opacity-75"
-                            fill="currentColor"
-                            d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                    </svg>
-                    <span class="text-lg">Establishing connection...</span>
-                </div>
+                <LoadingSpinner size="lg" color="neutral" text="Establishing connection..." text-class="text-lg" />
             </div>
         </div>
 
@@ -129,7 +111,7 @@ watch(isConnected, (connected, wasConnected) => {
             >
                 <!-- Create Room Section -->
                 <div class="rounded-xl border border-neutral-800 bg-neutral-900/40 p-6 mb-6">
-                    <div class="flex items-center justify-between">
+                    <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
                             <h2 class="text-xl font-semibold text-neutral-100">
                                 {{ $t('createRoom.title') }}
@@ -138,7 +120,12 @@ watch(isConnected, (connected, wasConnected) => {
                                 {{ $t('createRoom.subtitle') }}
                             </p>
                         </div>
-                        <UButton color="primary" size="lg" @click="openCreateModal">
+                        <UButton
+                            color="primary"
+                            size="lg"
+                            class="cursor-pointer self-center md:w-auto"
+                            @click="openCreateModal"
+                        >
                             {{ $t('createRoom.button') }}
                         </UButton>
                     </div>
@@ -152,42 +139,11 @@ watch(isConnected, (connected, wasConnected) => {
 
                     <!-- Loading State -->
                     <div v-if="isLoading" class="flex items-center justify-center py-8">
-                        <div class="flex items-center gap-3 text-neutral-400">
-                            <svg class="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                                <circle
-                                    class="opacity-25"
-                                    cx="12"
-                                    cy="12"
-                                    r="10"
-                                    stroke="currentColor"
-                                    stroke-width="4"
-                                    fill="none"
-                                />
-                                <path
-                                    class="opacity-75"
-                                    fill="currentColor"
-                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                                />
-                            </svg>
-                            {{ $t('roomList.loading') }}
-                        </div>
+                        <LoadingSpinner size="sm" color="neutral" :text="$t('roomList.loading')" />
                     </div>
 
                     <!-- Empty State -->
                     <div v-else-if="rooms.length === 0" class="text-center py-8 text-neutral-400">
-                        <svg
-                            class="h-12 w-12 mx-auto mb-4 text-neutral-500"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                stroke-width="2"
-                                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-                            />
-                        </svg>
                         <p>{{ $t('roomList.empty') }}</p>
                     </div>
 
@@ -197,11 +153,11 @@ watch(isConnected, (connected, wasConnected) => {
                             <div
                                 v-for="room in rooms"
                                 :key="room.id"
-                                class="flex items-center justify-between rounded-xl border border-neutral-700 bg-neutral-800/50 p-4 hover:bg-neutral-800/70 transition-colors"
+                                class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-xl border border-neutral-700 bg-neutral-800/50 p-4 hover:bg-neutral-800/70 transition-colors"
                             >
-                                <div class="flex items-center gap-4">
+                                <div class="flex items-center gap-4 flex-1 min-w-0">
                                     <div
-                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600/20 text-blue-400"
+                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-blue-600/20 text-blue-400 flex-shrink-0"
                                     >
                                         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path
@@ -212,14 +168,14 @@ watch(isConnected, (connected, wasConnected) => {
                                             />
                                         </svg>
                                     </div>
-                                    <div>
-                                        <h3 class="font-medium text-neutral-100 text-left">{{ room.name }}</h3>
-                                        <div class="flex items-center gap-4 text-sm text-neutral-400">
+                                    <div class="flex-1 min-w-0">
+                                        <h3 class="font-medium text-neutral-100 text-left truncate">{{ room.name }}</h3>
+                                        <div class="flex flex-wrap items-center gap-2 text-sm text-neutral-400 mt-1">
                                             <span
                                                 >{{ room.playerCount }}/{{ room.maxPlayers }}
                                                 {{ $t('roomList.playerCount') }}</span
                                             >
-                                            <span v-if="room.hasPassword" class="flex items-center gap-1">
+                                            <span v-if="room.hasPassword" class="flex items-center gap-1 flex-shrink-0">
                                                 <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                                     <path
                                                         fill-rule="evenodd"
@@ -231,7 +187,7 @@ watch(isConnected, (connected, wasConnected) => {
                                             </span>
                                             <span
                                                 v-if="room.hostId === user?.id"
-                                                class="flex items-center gap-1 text-blue-400"
+                                                class="flex items-center gap-1 text-blue-400 flex-shrink-0"
                                             >
                                                 <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
                                                     <path
@@ -243,7 +199,7 @@ watch(isConnected, (connected, wasConnected) => {
                                                 {{ $t('roomList.yourRoom') }}
                                             </span>
                                             <span
-                                                class="text-xs px-2 py-1 rounded-full bg-neutral-700 text-neutral-300"
+                                                class="text-xs px-2 py-1 rounded-full bg-neutral-700 text-neutral-300 flex-shrink-0"
                                             >
                                                 {{ $t(`roomList.status.${room.status}`) }}
                                             </span>
@@ -253,7 +209,7 @@ watch(isConnected, (connected, wasConnected) => {
                                 <button
                                     :disabled="room.status !== 'waiting'"
                                     @click="joinRoom(room.id)"
-                                    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:bg-neutral-700 disabled:text-neutral-400 disabled:cursor-not-allowed"
+                                    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:bg-neutral-700 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer w-full md:w-auto"
                                 >
                                     {{ $t('roomList.joinButton') }}
                                 </button>

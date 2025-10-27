@@ -1,6 +1,6 @@
 <template>
     <div
-        class="min-h-screen flex flex-col bg-gradient-to-b from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900"
+        class="min-h-screen flex flex-col bg-gradient-to-br from-neutral-50 to-white dark:from-neutral-950 dark:to-neutral-900"
     >
         <!-- Header -->
         <LayoutHeader />

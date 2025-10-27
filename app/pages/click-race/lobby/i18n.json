@@ -29,7 +29,7 @@
             "empty": "No game rooms available. Create the first one!",
             "loading": "Loading rooms...",
             "playerCount": "players",
-            "passwordProtected": "Password protected",
+            "passwordProtected": "Private",
             "yourRoom": "Your room",
             "joinButton": "Join Room",
             "status": {
@@ -79,7 +79,7 @@
             "empty": "Nenhuma sala de jogo disponível. Crie a primeira!",
             "loading": "Carregando salas...",
             "playerCount": "jogadores",
-            "passwordProtected": "Protegida por senha",
+            "passwordProtected": "Privado",
             "yourRoom": "Sua sala",
             "joinButton": "Entrar na Sala",
             "status": {

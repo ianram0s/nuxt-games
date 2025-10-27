@@ -5,6 +5,19 @@ const toast = useToast();
 const isSigningOut = ref(false);
 const isSigningIn = ref(false);
 
+const items = [
+    {
+        label: $t('navigation.wordSpy'),
+        to: '/spy',
+        icon: 'i-heroicons-eye',
+    },
+    {
+        label: $t('navigation.clickRace'),
+        to: '/click-race',
+        icon: 'i-heroicons-cursor-arrow-rays',
+    },
+];
+
 const navigateToSignIn = async () => {
     isSigningIn.value = true;
     try {
@@ -46,13 +59,12 @@ const handleSignOut = async () => {
 <template>
     <UHeader
         :title="$t('app.name')"
+        :toggle="false"
         :ui="{
             root: 'backdrop-blur supports-[backdrop-filter]:bg-white/70 dark:supports-[backdrop-filter]:bg-neutral-900/70 border-b border-neutral-200/60 dark:border-neutral-800/60 sticky top-0 z-50',
             container: 'p-4 sm:p-6',
             title: 'text-xl sm:text-2xl font-bold text-neutral-900 dark:text-white',
         }"
-        toggle-side="left"
-        mode="slideover"
     >
         <template #right>
             <div class="flex items-center gap-4">

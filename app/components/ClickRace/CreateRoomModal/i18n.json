@@ -10,11 +10,13 @@
         "create": "Create Room",
         "creating": "Creating...",
         "nameRequired": "Room name is required",
+        "nameTooLong": "Room name must not exceed 16 characters",
         "createFailed": "Failed to create room",
         "unexpectedError": "An unexpected error occurred",
         "errors": {
             "alreadyHosting": "You are already hosting a room",
-            "alreadyExists": "A room with this name already exists"
+            "alreadyExists": "A room with this name already exists",
+            "nameTooLong": "Room name must not exceed 16 characters"
         }
     },
     "pt-br": {
@@ -28,11 +30,13 @@
         "create": "Criar Sala",
         "creating": "Criando...",
         "nameRequired": "Nome da sala é obrigatório",
+        "nameTooLong": "O nome da sala não pode exceder 16 caracteres",
         "createFailed": "Falha ao criar sala",
         "unexpectedError": "Ocorreu um erro inesperado",
         "errors": {
             "alreadyHosting": "Você já está hospedando uma sala",
-            "alreadyExists": "Já existe uma sala com este nome"
+            "alreadyExists": "Já existe uma sala com este nome",
+            "nameTooLong": "O nome da sala não pode exceder 16 caracteres"
         }
     }
 }

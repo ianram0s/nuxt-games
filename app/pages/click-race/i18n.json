@@ -49,8 +49,8 @@
             }
         },
         "cta": {
-            "startPlaying": "Começar a Correr",
-            "signInToPlay": "Entre para Correr",
+            "startPlaying": "Jogar Agora",
+            "signInToPlay": "Entre para Jogar",
             "readyMessage": "Pronto para testar sua velocidade de cliques?",
             "signInMessage": "Entre para começar a correr e competir com jogadores do mundo todo!"
         },
