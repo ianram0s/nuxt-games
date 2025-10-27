@@ -292,7 +292,7 @@ watch(isConnected, (connected, wasConnected) => {
                 color="blue"
                 :text="$t('ui.loadingRoom')"
                 container-class="flex-col space-y-4"
-                text-class="text-neutral-400"
+                text-class="text-neutral-600 dark:text-neutral-400"
             />
         </div>
 
@@ -300,37 +300,43 @@ watch(isConnected, (connected, wasConnected) => {
         <div v-else class="text-center max-w-4xl mx-auto w-full">
             <!-- Header -->
             <div class="mb-4 sm:mb-8 px-2">
-                <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-neutral-100">
+                <h1
+                    class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-neutral-900 dark:text-neutral-100"
+                >
                     {{ $t('ui.clickRaceGame') }}
                 </h1>
-                <p class="mt-2 text-xs sm:text-sm text-neutral-500 hidden sm:block">
+                <p class="mt-2 text-xs sm:text-sm text-neutral-600 dark:text-neutral-500 hidden sm:block">
                     {{ $t('ui.welcomeMessage') }}
                 </p>
             </div>
 
             <!-- Game Status -->
             <div
-                class="mx-auto w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-4 sm:p-6 md:p-10 shadow-2xl backdrop-blur mb-4 sm:mb-6"
+                class="mx-auto w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border border-neutral-200 dark:border-neutral-800/60 bg-white/80 dark:bg-neutral-950/70 p-4 sm:p-6 md:p-10 shadow-2xl backdrop-blur mb-4 sm:mb-6"
             >
                 <div class="flex items-center justify-between mb-4 sm:mb-6">
                     <div v-if="room?.status === 'playing'">
-                        <div class="text-xs sm:text-sm text-neutral-400">
+                        <div class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-400">
                             {{ $t('ui.yourScore') }}:
-                            <span class="text-blue-400 font-semibold">{{
+                            <span class="text-blue-600 dark:text-blue-400 font-semibold">{{
                                 connectedPlayers.find((p) => p.userId === user?.id)?.currentClicks || 0
                             }}</span>
                         </div>
                     </div>
                     <div v-if="room?.status === 'playing'" class="text-right">
-                        <div class="text-xl sm:text-2xl font-bold text-blue-400">{{ gameTimeRemaining }}s</div>
-                        <div class="text-xs sm:text-sm text-neutral-400">{{ $t('ui.timeRemaining') }}</div>
+                        <div class="text-xl sm:text-2xl font-bold text-blue-600 dark:text-blue-400">
+                            {{ gameTimeRemaining }}s
+                        </div>
+                        <div class="text-xs sm:text-sm text-neutral-700 dark:text-neutral-400">
+                            {{ $t('ui.timeRemaining') }}
+                        </div>
                     </div>
                 </div>
 
                 <!-- Click Race Game Canvas -->
                 <div class="relative w-full max-w-full mx-auto mb-4 sm:mb-6 px-2 sm:px-4">
                     <div
-                        class="relative border-2 sm:border-4 border-blue-600 rounded-xl sm:rounded-2xl bg-gradient-to-br from-neutral-900 via-neutral-950 to-black overflow-hidden game-canvas"
+                        class="relative border-2 sm:border-4 border-blue-600 rounded-xl sm:rounded-2xl bg-gradient-to-br from-neutral-50 to-neutral-100 dark:from-neutral-900 dark:via-neutral-950 dark:to-black overflow-hidden game-canvas"
                         :style="{
                             width: '100%',
                             height: '0',
@@ -369,20 +375,26 @@ watch(isConnected, (connected, wasConnected) => {
                                 class="absolute inset-0 flex items-center justify-center"
                             >
                                 <div class="text-center px-4">
-                                    <div class="animate-pulse text-blue-400 text-base sm:text-xl font-semibold mb-2">
+                                    <div
+                                        class="animate-pulse text-blue-600 dark:text-blue-400 text-base sm:text-xl font-semibold mb-2"
+                                    >
                                         {{ $t('ui.waitingForGame') }}
                                     </div>
-                                    <div class="text-neutral-400 text-xs sm:text-sm">{{ $t('ui.getReady') }}</div>
+                                    <div class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm">
+                                        {{ $t('ui.getReady') }}
+                                    </div>
                                 </div>
                             </div>
 
                             <!-- Game End State -->
                             <div v-else class="absolute inset-0 flex items-center justify-center">
                                 <div class="text-center px-4">
-                                    <div class="text-lg sm:text-2xl font-bold text-neutral-300 mb-2">
+                                    <div
+                                        class="text-lg sm:text-2xl font-bold text-neutral-700 dark:text-neutral-300 mb-2"
+                                    >
                                         {{ $t('ui.gameEnded') }}
                                     </div>
-                                    <div class="text-neutral-400 text-xs sm:text-sm">
+                                    <div class="text-neutral-600 dark:text-neutral-400 text-xs sm:text-sm">
                                         {{ $t('ui.waitingForNextRound') }}
                                     </div>
                                 </div>
@@ -436,9 +448,9 @@ watch(isConnected, (connected, wasConnected) => {
 
             <!-- Connected Players -->
             <div
-                class="mx-auto w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-4 sm:p-6 md:p-10 shadow-2xl backdrop-blur"
+                class="mx-auto w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border border-neutral-200 dark:border-neutral-800/60 bg-white/80 dark:bg-neutral-950/70 p-4 sm:p-6 md:p-10 shadow-2xl backdrop-blur"
             >
-                <h2 class="text-lg sm:text-xl font-semibold text-neutral-100 mb-4 sm:mb-6">
+                <h2 class="text-lg sm:text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4 sm:mb-6">
                     {{ $t('ui.connectedPlayers') }}
                 </h2>
 
@@ -447,7 +459,7 @@ watch(isConnected, (connected, wasConnected) => {
                     <div
                         v-for="player in connectedPlayers"
                         :key="player.userId"
-                        class="flex items-center justify-between rounded-lg sm:rounded-xl border border-neutral-700 bg-neutral-800/50 p-3 sm:p-4"
+                        class="flex items-center justify-between rounded-lg sm:rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/50 p-3 sm:p-4"
                     >
                         <div class="flex items-center gap-2 sm:gap-4">
                             <div
@@ -465,7 +477,9 @@ watch(isConnected, (connected, wasConnected) => {
                             </div>
                             <div>
                                 <div class="flex items-center gap-2">
-                                    <h3 class="font-medium text-neutral-100 text-left text-sm sm:text-base">
+                                    <h3
+                                        class="font-medium text-neutral-900 dark:text-neutral-100 text-left text-sm sm:text-base"
+                                    >
                                         {{ player.userName }}
                                     </h3>
                                     <span
@@ -481,7 +495,9 @@ watch(isConnected, (connected, wasConnected) => {
                                         <span class="hidden sm:inline">{{ $t('ui.host') }}</span>
                                     </span>
                                 </div>
-                                <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-neutral-400">
+                                <div
+                                    class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-neutral-600 dark:text-neutral-400"
+                                >
                                     <span>{{ $t('ui.wins', { wins: player.wins }) }}</span>
                                     <span
                                         v-if="player.role === 'player'"
@@ -504,16 +520,19 @@ watch(isConnected, (connected, wasConnected) => {
                             </div>
                         </div>
                         <div class="text-right flex-shrink-0">
-                            <div class="text-base sm:text-lg font-semibold text-blue-400">
+                            <div class="text-base sm:text-lg font-semibold text-blue-600 dark:text-blue-400">
                                 {{ player.currentClicks }}
                             </div>
-                            <div class="text-xs text-neutral-400">{{ $t('ui.clicks') }}</div>
+                            <div class="text-xs text-neutral-600 dark:text-neutral-400">{{ $t('ui.clicks') }}</div>
                         </div>
                     </div>
                 </div>
 
                 <!-- Empty State -->
-                <div v-if="connectedPlayers.length === 0" class="text-center py-8 text-neutral-400">
+                <div
+                    v-if="connectedPlayers.length === 0"
+                    class="text-center py-8 text-neutral-600 dark:text-neutral-400"
+                >
                     <svg
                         class="h-12 w-12 mx-auto mb-4 text-neutral-500"
                         fill="none"

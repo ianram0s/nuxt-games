@@ -63,11 +63,11 @@ const handleSignOut = async () => {
                             <div
                                 class="w-12 h-12 rounded-full bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center"
                             >
-                                <UIcon name="i-heroicons-user" class="w-6 h-6 text-neutral-600 dark:text-neutral-400" />
+                                <UIcon name="i-heroicons-user" class="w-6 h-6 text-neutral-900 dark:text-neutral-400" />
                             </div>
                         </div>
-                        <h1 class="text-2xl font-bold">{{ $t('common.welcome') }}</h1>
-                        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                        <h1 class="text-2xl font-bold text-neutral-900 dark:text-white">{{ $t('common.welcome') }}</h1>
+                        <p class="text-sm text-neutral-600 dark:text-neutral-400">
                             {{ user ? t('status.signedIn') : t('status.signInPrompt') }}
                         </p>
                     </div>

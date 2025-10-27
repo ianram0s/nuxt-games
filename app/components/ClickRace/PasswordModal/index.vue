@@ -94,22 +94,26 @@ watch(open, (newValue) => {
             @click.self="cancelModal"
         >
             <div
-                class="w-full max-w-md rounded-2xl border border-neutral-800/60 bg-neutral-950/90 p-8 shadow-2xl backdrop-blur"
+                class="w-full max-w-md rounded-2xl border border-neutral-200 dark:border-neutral-800/60 bg-white dark:bg-neutral-950/90 p-8 shadow-2xl backdrop-blur"
             >
                 <div class="text-center mb-6">
-                    <h3 class="text-2xl font-semibold text-neutral-100 mb-2">{{ $t('title') }}</h3>
-                    <p class="text-sm text-neutral-400">{{ $t('subtitle') }}</p>
+                    <h3 class="text-2xl font-semibold text-neutral-900 dark:text-neutral-100 mb-2">
+                        {{ $t('title') }}
+                    </h3>
+                    <p class="text-sm text-neutral-700 dark:text-neutral-400">{{ $t('subtitle') }}</p>
                 </div>
 
                 <div class="space-y-4">
                     <div>
-                        <label class="block text-sm font-medium text-neutral-300 mb-2">{{ $t('passwordLabel') }}</label>
+                        <label class="block text-sm font-medium text-neutral-900 dark:text-neutral-300 mb-2">{{
+                            $t('passwordLabel')
+                        }}</label>
                         <input
                             v-model="password"
                             type="password"
                             id="roomPassword"
                             :placeholder="$t('passwordPlaceholder')"
-                            class="w-full rounded-xl border border-neutral-700 bg-neutral-900/50 px-4 py-3 text-neutral-100 placeholder-neutral-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
+                            class="w-full rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-900/50 px-4 py-3 text-neutral-900 dark:text-neutral-100 placeholder-neutral-500 dark:placeholder-neutral-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20"
                             @keydown="handleKeydown"
                             :disabled="isLoading"
                         />
@@ -121,14 +125,14 @@ watch(open, (newValue) => {
                         <button
                             @click="cancelModal"
                             :disabled="isLoading"
-                            class="flex-1 rounded-xl border border-neutral-700 bg-neutral-800/50 px-4 py-3 text-neutral-300 font-medium transition-colors hover:bg-neutral-800/70 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+                            class="flex-1 rounded-xl border border-neutral-300 dark:border-neutral-700 bg-white dark:bg-neutral-800/50 px-4 py-3 text-neutral-900 dark:text-neutral-300 font-medium transition-colors hover:bg-neutral-100 dark:hover:bg-neutral-800/70 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                         >
                             {{ $t('cancel') }}
                         </button>
                         <button
                             @click="joinRoom"
                             :disabled="!password.trim() || isLoading"
-                            class="flex-1 rounded-xl bg-blue-600 px-4 py-3 text-white font-medium transition-colors hover:bg-blue-700 disabled:bg-neutral-700 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
+                            class="flex-1 rounded-xl bg-blue-600 px-4 py-3 text-white font-medium transition-colors hover:bg-blue-700 disabled:bg-neutral-300 dark:disabled:bg-neutral-700 disabled:text-neutral-500 dark:disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer"
                         >
                             <LoadingSpinner
                                 v-if="isLoading"

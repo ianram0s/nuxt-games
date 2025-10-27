@@ -57,7 +57,7 @@ const { isConnected, isConnecting, connect, disconnect } = useSocket();
                         name="i-heroicons-information-circle"
                         class="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5"
                     />
-                    <div class="text-sm text-blue-800 dark:text-blue-200">
+                    <div class="text-sm text-blue-900 dark:text-blue-200">
                         <p class="font-medium mb-1">Debug Information</p>
                         <p>
                             This page allows you to test the socket connection functionality. Use the buttons above to

@@ -23,7 +23,7 @@ const { isConnected } = useSocket();
         </template>
 
         <div class="space-y-4">
-            <div class="flex items-center justify-between p-4 bg-neutral-50 dark:bg-neutral-800 rounded-xl">
+            <div class="flex items-center justify-between p-4 bg-neutral-100 dark:bg-neutral-800 rounded-xl">
                 <div class="flex items-center gap-3">
                     <UIcon
                         :name="isConnected ? 'i-heroicons-check-circle' : 'i-heroicons-x-circle'"

@@ -11,9 +11,11 @@ const { isConnected } = useSocket();
             <div class="text-center mb-12">
                 <h1 class="text-4xl sm:text-5xl font-bold text-neutral-900 dark:text-white mb-4">
                     Socket Debug
-                    <span class="text-lg font-normal ml-2"> ({{ isConnected ? 'Connected' : 'Disconnected' }}) </span>
+                    <span class="text-base font-normal ml-2 text-neutral-700 dark:text-neutral-300">
+                        ({{ isConnected ? 'Connected' : 'Disconnected' }})
+                    </span>
                 </h1>
-                <p class="text-lg text-neutral-600 dark:text-neutral-300 max-w-2xl mx-auto">
+                <p class="text-lg text-neutral-700 dark:text-neutral-300 max-w-2xl mx-auto">
                     Test and monitor your socket connection status in real-time
                 </p>
             </div>

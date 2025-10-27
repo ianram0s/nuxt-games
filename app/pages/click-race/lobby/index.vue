@@ -84,13 +84,13 @@ watch(isConnected, (connected, wasConnected) => {
         <div v-else class="text-center max-w-4xl mx-auto w-full">
             <!-- Header -->
             <div class="mb-8">
-                <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl text-neutral-100">
+                <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl text-neutral-900 dark:text-neutral-100">
                     {{ $t('title') }}
                 </h1>
-                <p class="mt-3 text-sm text-neutral-400 sm:text-base">
+                <p class="mt-3 text-sm text-neutral-700 dark:text-neutral-400 sm:text-base">
                     {{ $t('welcome') }}
                 </p>
-                <p class="text-sm text-neutral-500">
+                <p class="text-sm text-neutral-600 dark:text-neutral-500">
                     {{ $t('subtitle') }}
                 </p>
             </div>
@@ -107,16 +107,18 @@ watch(isConnected, (connected, wasConnected) => {
 
             <!-- Main Content -->
             <div
-                class="mx-auto w-full max-w-4xl flex flex-col rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-10 shadow-2xl backdrop-blur"
+                class="mx-auto w-full max-w-4xl flex flex-col rounded-3xl border border-neutral-200 dark:border-neutral-800/60 bg-white/80 dark:bg-neutral-950/70 p-10 shadow-2xl backdrop-blur"
             >
                 <!-- Create Room Section -->
-                <div class="rounded-xl border border-neutral-800 bg-neutral-900/40 p-6 mb-6">
+                <div
+                    class="rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/40 p-6 mb-6"
+                >
                     <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
-                            <h2 class="text-xl font-semibold text-neutral-100">
+                            <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100">
                                 {{ $t('createRoom.title') }}
                             </h2>
-                            <p class="text-sm text-neutral-400 mt-1">
+                            <p class="text-sm text-neutral-700 dark:text-neutral-400 mt-1">
                                 {{ $t('createRoom.subtitle') }}
                             </p>
                         </div>
@@ -132,8 +134,10 @@ watch(isConnected, (connected, wasConnected) => {
                 </div>
 
                 <!-- Room List Section -->
-                <div class="flex flex-col rounded-xl border border-neutral-800 bg-neutral-900/40 p-6">
-                    <h2 class="text-xl font-semibold text-neutral-100 mb-4">
+                <div
+                    class="flex flex-col rounded-xl border border-neutral-200 dark:border-neutral-800 bg-neutral-100/80 dark:bg-neutral-900/40 p-6"
+                >
+                    <h2 class="text-xl font-semibold text-neutral-900 dark:text-neutral-100 mb-4">
                         {{ $t('roomList.title') }}
                     </h2>
 
@@ -143,7 +147,7 @@ watch(isConnected, (connected, wasConnected) => {
                     </div>
 
                     <!-- Empty State -->
-                    <div v-else-if="rooms.length === 0" class="text-center py-8 text-neutral-400">
+                    <div v-else-if="rooms.length === 0" class="text-center py-8 text-neutral-600 dark:text-neutral-400">
                         <p>{{ $t('roomList.empty') }}</p>
                     </div>
 
@@ -153,7 +157,7 @@ watch(isConnected, (connected, wasConnected) => {
                             <div
                                 v-for="room in rooms"
                                 :key="room.id"
-                                class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-xl border border-neutral-700 bg-neutral-800/50 p-4 hover:bg-neutral-800/70 transition-colors"
+                                class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 rounded-xl border border-neutral-200 dark:border-neutral-700 bg-neutral-50 dark:bg-neutral-800/50 p-4 hover:bg-neutral-100 dark:hover:bg-neutral-800/70 transition-colors"
                             >
                                 <div class="flex items-center gap-4 flex-1 min-w-0">
                                     <div
@@ -169,8 +173,14 @@ watch(isConnected, (connected, wasConnected) => {
                                         </svg>
                                     </div>
                                     <div class="flex-1 min-w-0">
-                                        <h3 class="font-medium text-neutral-100 text-left truncate">{{ room.name }}</h3>
-                                        <div class="flex flex-wrap items-center gap-2 text-sm text-neutral-400 mt-1">
+                                        <h3
+                                            class="font-medium text-neutral-900 dark:text-neutral-100 text-left truncate"
+                                        >
+                                            {{ room.name }}
+                                        </h3>
+                                        <div
+                                            class="flex flex-wrap items-center gap-2 text-sm text-neutral-700 dark:text-neutral-400 mt-1"
+                                        >
                                             <span
                                                 >{{ room.playerCount }}/{{ room.maxPlayers }}
                                                 {{ $t('roomList.playerCount') }}</span
@@ -199,7 +209,7 @@ watch(isConnected, (connected, wasConnected) => {
                                                 {{ $t('roomList.yourRoom') }}
                                             </span>
                                             <span
-                                                class="text-xs px-2 py-1 rounded-full bg-neutral-700 text-neutral-300 flex-shrink-0"
+                                                class="text-xs px-2 py-1 rounded-full bg-neutral-200 dark:bg-neutral-700 text-neutral-700 dark:text-neutral-300 flex-shrink-0"
                                             >
                                                 {{ $t(`roomList.status.${room.status}`) }}
                                             </span>
@@ -209,7 +219,7 @@ watch(isConnected, (connected, wasConnected) => {
                                 <button
                                     :disabled="room.status !== 'waiting'"
                                     @click="joinRoom(room.id)"
-                                    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:bg-neutral-700 disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer w-full md:w-auto"
+                                    class="rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white hover:bg-blue-700 transition-colors disabled:bg-neutral-300 dark:disabled:bg-neutral-700 disabled:text-neutral-500 dark:disabled:text-neutral-400 disabled:cursor-not-allowed cursor-pointer w-full md:w-auto"
                                 >
                                     {{ $t('roomList.joinButton') }}
                                 </button>

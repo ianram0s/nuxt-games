@@ -62,7 +62,7 @@ const containerClass = computed(() => {
 });
 
 const textClass = computed(() => {
-    const baseClass = props.text ? 'text-neutral-400' : '';
+    const baseClass = props.text ? 'text-neutral-700 dark:text-neutral-400' : '';
     return `${baseClass} ${props.textClass}`.trim();
 });
 </script>
