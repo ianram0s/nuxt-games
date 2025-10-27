@@ -24,6 +24,13 @@ export interface ClickRaceRoom {
     createdAt: number;
 }
 
+export interface ButtonPosition {
+    x: number;
+    y: number;
+    width: number;
+    height: number;
+}
+
 export interface ServerClickRaceRoom extends ClickRaceRoom {
     password?: string;
     players: Map<string, ClickRacePlayer>;
@@ -32,6 +39,8 @@ export interface ServerClickRaceRoom extends ClickRaceRoom {
         endTime?: number;
         winnerId?: string;
         scores?: Record<string, number>;
+        buttonSequence?: ButtonPosition[];
+        playerButtonIndices?: Map<string, number>;
     };
 }
 
@@ -39,6 +48,7 @@ export interface ClientClickRaceRoom extends ClickRaceRoom {
     hasPassword: boolean;
     timestamp: number;
     players: ClickRacePlayer[];
+    currentButton?: ButtonPosition;
 }
 
 export interface CreateClickRaceRoomData {

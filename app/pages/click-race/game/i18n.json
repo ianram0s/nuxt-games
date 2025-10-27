@@ -41,13 +41,11 @@
             "roomNotFoundDescription": "The room you are looking for does not exist.",
             "loadingRoom": "Loading room...",
             "clickRaceGame": "Click Race Game",
-            "roomId": "Room ID: {gameId}",
-            "roomName": "Room: {name}",
             "welcomeMessage": "Welcome to the click race game! Get ready to click as fast as you can.",
             "gameStatus": "Game Status",
             "currentStatus": "Current status: {status}",
             "timeRemaining": "Time Remaining",
-            "click": "CLICK",
+            "yourScore": "Your Score",
             "ready": "Ready",
             "notReady": "Not Ready",
             "startGame": "Start Game",
@@ -57,7 +55,12 @@
             "clicks": "clicks",
             "noPlayersConnected": "No players connected yet",
             "spectator": "Spectator",
-            "player": "Player"
+            "player": "Player",
+            "host": "Host",
+            "waitingForGame": "Waiting for game to start",
+            "getReady": "Get ready to click as fast as you can!",
+            "gameEnded": "Game Ended",
+            "waitingForNextRound": "Waiting for next round to start..."
         }
     },
     "pt-br": {
@@ -102,13 +105,11 @@
             "roomNotFoundDescription": "A sala que você está procurando não existe.",
             "loadingRoom": "Carregando sala...",
             "clickRaceGame": "Corrida de Cliques",
-            "roomId": "ID da Sala: {gameId}",
-            "roomName": "Sala: {name}",
             "welcomeMessage": "Bem-vindo ao jogo de corrida de cliques! Prepare-se para clicar o mais rápido que puder.",
             "gameStatus": "Status do Jogo",
             "currentStatus": "Status atual: {status}",
             "timeRemaining": "Tempo Restante",
-            "click": "CLICAR",
+            "yourScore": "Sua Pontuação",
             "ready": "Pronto",
             "notReady": "Não Pronto",
             "startGame": "Iniciar Jogo",
@@ -118,7 +119,12 @@
             "clicks": "cliques",
             "noPlayersConnected": "Nenhum jogador conectado ainda",
             "spectator": "Espectador",
-            "player": "Jogador"
+            "player": "Jogador",
+            "host": "Host",
+            "waitingForGame": "Aguardando o jogo começar",
+            "getReady": "Prepare-se para clicar o mais rápido que puder!",
+            "gameEnded": "Jogo Finalizado",
+            "waitingForNextRound": "Aguardando próxima rodada começar..."
         }
     }
 }

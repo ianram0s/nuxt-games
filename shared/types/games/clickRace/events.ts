@@ -1,4 +1,4 @@
-import type { ClientClickRaceRoom, CreateClickRaceRoomData, ClickRacePlayer } from './';
+import type { ClientClickRaceRoom, CreateClickRaceRoomData, ClickRacePlayer, ButtonPosition } from './';
 import type { SocketResponse } from '../../socket';
 
 // Click Race-specific Server -> Client events
@@ -7,6 +7,7 @@ export interface ClickRaceServerToClientEvents {
     'clickRace:room:update': (room: ClientClickRaceRoom) => void;
     'clickRace:player:ready': (playerId: string, isReady: boolean) => void;
     'clickRace:player:click': (playerId: string, clicks: number) => void;
+    'clickRace:button:update': (position: ButtonPosition) => void;
     'clickRace:game:start': (room: ClientClickRaceRoom) => void;
     'clickRace:game:end': (room: ClientClickRaceRoom, winner: ClickRacePlayer) => void;
 }
@@ -26,6 +27,6 @@ export interface ClickRaceClientToServerEvents {
     ) => void;
     'clickRace:room:leave': (gameId: string, callback: (response: SocketResponse) => void) => void;
     'clickRace:player:ready': (gameId: string, isReady: boolean, callback: (response: SocketResponse) => void) => void;
-    'clickRace:player:click': (gameId: string, callback: (response: SocketResponse) => void) => void;
+    'clickRace:player:click': (gameId: string, callback: (response: SocketResponse<ButtonPosition>) => void) => void;
     'clickRace:game:start': (gameId: string, callback: (response: SocketResponse) => void) => void;
 }

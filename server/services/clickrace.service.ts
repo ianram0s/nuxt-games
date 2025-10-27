@@ -1,4 +1,10 @@
-import { ClientClickRaceRoom, CreateClickRaceRoomData, ServerClickRaceRoom, ClickRacePlayer } from '~~/shared/types';
+import {
+    ClientClickRaceRoom,
+    CreateClickRaceRoomData,
+    ServerClickRaceRoom,
+    ClickRacePlayer,
+    ButtonPosition,
+} from '~~/shared/types';
 import type { SocketResponse, IoServer, IoSocket } from '~~/shared/types';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -178,7 +184,28 @@ class ClickRaceService {
         return { success: true };
     }
 
-    private handlePlayerClick(socket: IoSocket, gameId: string): SocketResponse {
+    private generateButtonSequence(
+        count: number,
+        canvasWidth: number = 800,
+        canvasHeight: number = 350,
+    ): ButtonPosition[] {
+        const buttons: ButtonPosition[] = [];
+        const minSize = 35;
+        const maxSize = 60;
+
+        for (let i = 0; i < count; i++) {
+            const size = Math.floor(Math.random() * (maxSize - minSize + 1)) + minSize;
+
+            const x = Math.floor(Math.random() * (canvasWidth - size));
+            const y = Math.floor(Math.random() * (canvasHeight - size));
+
+            buttons.push({ x, y, width: size, height: size });
+        }
+
+        return buttons;
+    }
+
+    private handlePlayerClick(socket: IoSocket, gameId: string): SocketResponse<ButtonPosition> {
         const room = this.rooms.get(gameId);
         const user = socket.data.user;
         if (!room) {
@@ -198,12 +225,29 @@ class ClickRaceService {
             return { success: false, error: 'spectatorCannotClick' };
         }
 
+        if (!room.gameData?.buttonSequence || !room.gameData.playerButtonIndices) {
+            return { success: false, error: 'gameDataMissing' };
+        }
+
         player.currentClicks++;
+
+        let playerIndex = room.gameData.playerButtonIndices.get(user.id) ?? 0;
+        playerIndex++;
+
+        if (playerIndex >= room.gameData.buttonSequence.length) {
+            playerIndex = 0;
+        }
+
+        room.gameData.playerButtonIndices.set(user.id, playerIndex);
+
         this.updateRoom(gameId);
 
         this.io?.to(`clickRace:room:${gameId}`).emit('clickRace:player:click', user.id, player.currentClicks);
 
-        return { success: true };
+        const nextButton = room.gameData.buttonSequence[playerIndex];
+        socket.emit('clickRace:button:update', nextButton);
+
+        return { success: true, data: nextButton };
     }
 
     private startGame(socket: IoSocket, gameId: string): SocketResponse {
@@ -231,18 +275,33 @@ class ClickRaceService {
         }
 
         room.status = 'playing';
+
+        const buttonSequence = this.generateButtonSequence(600, 800, 350);
+
+        // Initialize per-player button indices
+        const playerButtonIndices = new Map<string, number>();
+        room.players.forEach((player) => {
+            player.currentClicks = 0;
+            // Start each player at index 0 (the first button)
+            playerButtonIndices.set(player.userId, 0);
+        });
+
         room.gameData = {
             startTime: Date.now(),
             scores: {},
+            buttonSequence,
+            playerButtonIndices,
         };
-
-        room.players.forEach((player) => {
-            player.currentClicks = 0;
-        });
 
         this.updateRoom(gameId);
 
         this.io?.to(`clickRace:room:${gameId}`).emit('clickRace:game:start', this.convertToClientRoom(room));
+
+        // Send the initial button to all players
+        if (room.gameData.buttonSequence && room.gameData.buttonSequence.length > 0) {
+            const initialButton = room.gameData.buttonSequence[0];
+            this.io?.to(`clickRace:room:${gameId}`).emit('clickRace:button:update', initialButton);
+        }
 
         setTimeout(() => {
             this.endGame(gameId);

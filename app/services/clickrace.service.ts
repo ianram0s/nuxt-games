@@ -1,7 +1,7 @@
 import { socketManager } from '~/lib/socket';
 import { logger } from '~~/shared/lib/logger';
 import type { SocketResponse } from '~~/shared/types';
-import type { ClientClickRaceRoom, CreateClickRaceRoomData, ClickRacePlayer } from '~~/shared/types';
+import type { ClientClickRaceRoom, CreateClickRaceRoomData, ClickRacePlayer, ButtonPosition } from '~~/shared/types';
 
 class ClickRaceService {
     private static instance: ClickRaceService;
@@ -103,7 +103,7 @@ class ClickRaceService {
      * @returns
      */
     public handlePlayerClick(gameId: string) {
-        return new Promise<SocketResponse>((resolve) => {
+        return new Promise<SocketResponse<ButtonPosition>>((resolve) => {
             this.socket.emit('clickRace:player:click', gameId, (response) => {
                 resolve(response);
             });
@@ -164,6 +164,16 @@ class ClickRaceService {
     }
 
     /**
+     * Listens for button position updates
+     * @param callback A callback function that will be called when button position updates
+     */
+    public onButtonUpdate(callback: (position: ButtonPosition) => void): void {
+        this.socket.on('clickRace:button:update', (position) => {
+            callback(position);
+        });
+    }
+
+    /**
      * Listens for game start events
      * @param callback A callback function that will be called when the game starts
      */
@@ -190,6 +200,7 @@ class ClickRaceService {
         this.socket.off('clickRace:room:update');
         this.socket.off('clickRace:player:ready');
         this.socket.off('clickRace:player:click');
+        this.socket.off('clickRace:button:update');
         this.socket.off('clickRace:game:start');
         this.socket.off('clickRace:game:end');
     }

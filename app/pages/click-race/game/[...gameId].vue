@@ -10,8 +10,7 @@ useHead({
 
 import { useRoute } from 'vue-router';
 import { clickRaceService } from '~/services/clickrace.service';
-import { logger } from '~~/shared/lib/logger';
-import type { ClientClickRaceRoom, ClickRacePlayer } from '~~/shared/types/games';
+import type { ClientClickRaceRoom, ClickRacePlayer, ButtonPosition } from '~~/shared/types/games';
 import PasswordModal from '~/components/ClickRace/PasswordModal/index.vue';
 
 const route = useRoute();
@@ -26,6 +25,23 @@ const room = ref<ClientClickRaceRoom | null>(null);
 const showPasswordModal = ref(false);
 const gameTimeRemaining = ref(0);
 const gameTimer = ref<NodeJS.Timeout | null>(null);
+const currentButtonPosition = ref<ButtonPosition | null>(null);
+const isClicking = ref(false);
+
+const CANVAS_WIDTH = 800;
+const CANVAS_HEIGHT = 350;
+
+const getButtonStyle = (position: ButtonPosition) => {
+    const size = Math.min(position.width, position.height);
+    return {
+        left: `${(position.x / CANVAS_WIDTH) * 100}%`,
+        top: `${(position.y / CANVAS_HEIGHT) * 100}%`,
+        width: `${(size / CANVAS_WIDTH) * 100}%`,
+        height: `${(size / CANVAS_HEIGHT) * 100}%`,
+        minWidth: '30px',
+        minHeight: '30px',
+    };
+};
 
 const gameId = Array.isArray(route.params.gameId) ? route.params.gameId[0] : route.params.gameId;
 
@@ -102,8 +118,9 @@ const leaveGame = async () => {
 };
 
 const handleClick = async () => {
-    if (room.value?.status !== 'playing') return;
+    if (room.value?.status !== 'playing' || !currentButtonPosition.value || isClicking.value) return;
 
+    isClicking.value = true;
     try {
         const response = await clickRaceService.handlePlayerClick(gameId!);
         if (!response.success) {
@@ -113,9 +130,13 @@ const handleClick = async () => {
                 icon: 'i-heroicons-x-circle',
                 color: 'error',
             });
+        } else if (response.data) {
+            currentButtonPosition.value = response.data;
         }
     } catch (error) {
         console.error('Failed to handle click:', error);
+    } finally {
+        isClicking.value = false;
     }
 };
 
@@ -188,6 +209,8 @@ const setupGameListeners = () => {
     clickRaceService.onGameStart((gameRoom) => {
         room.value = gameRoom;
         connectedPlayers.value = gameRoom.players || [];
+        currentButtonPosition.value = null;
+        isClicking.value = false;
 
         gameTimeRemaining.value = 30;
         gameTimer.value = setInterval(() => {
@@ -225,6 +248,10 @@ const setupGameListeners = () => {
             icon: 'i-heroicons-trophy',
             color: 'success',
         });
+    });
+
+    clickRaceService.onButtonUpdate((position) => {
+        currentButtonPosition.value = position;
     });
 };
 
@@ -272,52 +299,100 @@ watch(isConnected, (connected, wasConnected) => {
         <!-- Game Content -->
         <div v-else class="text-center max-w-4xl mx-auto w-full">
             <!-- Header -->
-            <div class="mb-8">
-                <h1 class="text-3xl font-semibold tracking-tight sm:text-4xl text-neutral-100">
+            <div class="mb-4 sm:mb-8 px-2">
+                <h1 class="text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight text-neutral-100">
                     {{ $t('ui.clickRaceGame') }}
                 </h1>
-                <p class="mt-3 text-sm text-neutral-400 sm:text-base">{{ $t('ui.roomId', { gameId }) }}</p>
-                <p v-if="room" class="text-sm text-neutral-400">
-                    {{ $t('ui.roomName', { name: room.name }) }}
-                </p>
-                <p class="text-sm text-neutral-500">
+                <p class="mt-2 text-xs sm:text-sm text-neutral-500 hidden sm:block">
                     {{ $t('ui.welcomeMessage') }}
                 </p>
             </div>
 
             <!-- Game Status -->
             <div
-                class="mx-auto w-full max-w-4xl flex flex-col rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-10 shadow-2xl backdrop-blur mb-6"
+                class="mx-auto w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-4 sm:p-6 md:p-10 shadow-2xl backdrop-blur mb-4 sm:mb-6"
             >
-                <div class="flex items-center justify-between mb-6">
-                    <div>
-                        <h2 class="text-xl font-semibold text-neutral-100">{{ $t('ui.gameStatus') }}</h2>
-                        <p class="text-sm text-neutral-400 mt-1">
-                            {{ $t('ui.currentStatus', { status: room?.status }) }}
-                        </p>
+                <div class="flex items-center justify-between mb-4 sm:mb-6">
+                    <div v-if="room?.status === 'playing'">
+                        <div class="text-xs sm:text-sm text-neutral-400">
+                            {{ $t('ui.yourScore') }}:
+                            <span class="text-blue-400 font-semibold">{{
+                                connectedPlayers.find((p) => p.userId === user?.id)?.currentClicks || 0
+                            }}</span>
+                        </div>
                     </div>
-                    <div class="text-right">
-                        <div class="text-2xl font-bold text-blue-400">{{ gameTimeRemaining }}s</div>
-                        <div class="text-sm text-neutral-400">{{ $t('ui.timeRemaining') }}</div>
+                    <div v-if="room?.status === 'playing'" class="text-right">
+                        <div class="text-xl sm:text-2xl font-bold text-blue-400">{{ gameTimeRemaining }}s</div>
+                        <div class="text-xs sm:text-sm text-neutral-400">{{ $t('ui.timeRemaining') }}</div>
                     </div>
                 </div>
 
-                <!-- Click Race Button -->
-                <div class="flex justify-center mb-6">
-                    <button
-                        @click="handleClick"
-                        :disabled="
-                            room?.status !== 'playing' ||
-                            connectedPlayers.find((p) => p.userId === user?.id)?.role === 'spectator'
-                        "
-                        class="w-32 h-32 rounded-full bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed transition-colors flex items-center justify-center text-white font-bold text-xl cursor-pointer"
+                <!-- Click Race Game Canvas -->
+                <div class="relative w-full max-w-full mx-auto mb-4 sm:mb-6 px-2 sm:px-4">
+                    <div
+                        class="relative border-2 sm:border-4 border-blue-600 rounded-xl sm:rounded-2xl bg-gradient-to-br from-neutral-900 via-neutral-950 to-black overflow-hidden game-canvas"
+                        :style="{
+                            width: '100%',
+                            height: '0',
+                            paddingBottom: '43.75%',
+                            maxWidth: '800px',
+                            margin: '0 auto',
+                        }"
                     >
-                        {{ $t('ui.click') }}
-                    </button>
+                        <div class="absolute inset-0 w-full h-full">
+                            <!-- Grid Pattern Background -->
+                            <div
+                                class="absolute inset-0 opacity-10 game-grid"
+                                style="
+                                    background-image:
+                                        linear-gradient(rgba(59, 130, 246, 0.1) 1px, transparent 1px),
+                                        linear-gradient(90deg, rgba(59, 130, 246, 0.1) 1px, transparent 1px);
+                                    background-size: 6.25% 6.25%;
+                                "
+                            ></div>
+
+                            <!-- Button Target -->
+                            <button
+                                v-if="currentButtonPosition && room?.status === 'playing'"
+                                @click="handleClick"
+                                :disabled="
+                                    connectedPlayers.find((p) => p.userId === user?.id)?.role === 'spectator' ||
+                                    isClicking
+                                "
+                                class="absolute rounded-full bg-gradient-to-br from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 active:scale-95 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-150 shadow-2xl ring-2 ring-red-400 ring-opacity-30 cursor-pointer touch-manipulation aspect-square"
+                                :style="getButtonStyle(currentButtonPosition)"
+                            ></button>
+
+                            <!-- Waiting State -->
+                            <div
+                                v-else-if="room?.status === 'waiting'"
+                                class="absolute inset-0 flex items-center justify-center"
+                            >
+                                <div class="text-center px-4">
+                                    <div class="animate-pulse text-blue-400 text-base sm:text-xl font-semibold mb-2">
+                                        {{ $t('ui.waitingForGame') }}
+                                    </div>
+                                    <div class="text-neutral-400 text-xs sm:text-sm">{{ $t('ui.getReady') }}</div>
+                                </div>
+                            </div>
+
+                            <!-- Game End State -->
+                            <div v-else class="absolute inset-0 flex items-center justify-center">
+                                <div class="text-center px-4">
+                                    <div class="text-lg sm:text-2xl font-bold text-neutral-300 mb-2">
+                                        {{ $t('ui.gameEnded') }}
+                                    </div>
+                                    <div class="text-neutral-400 text-xs sm:text-sm">
+                                        {{ $t('ui.waitingForNextRound') }}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Game Controls -->
-                <div class="flex gap-4 justify-center">
+                <div class="flex flex-wrap gap-2 sm:gap-4 justify-center">
                     <button
                         v-if="
                             room?.status === 'waiting' &&
@@ -325,7 +400,7 @@ watch(isConnected, (connected, wasConnected) => {
                         "
                         @click="toggleReady"
                         :class="[
-                            'px-6 py-2 rounded-lg transition-colors cursor-pointer',
+                            'px-3 sm:px-6 py-2 text-xs sm:text-sm rounded-lg transition-colors cursor-pointer',
                             connectedPlayers.find((p) => p.userId === user?.id)?.isReady
                                 ? 'bg-yellow-600 hover:bg-yellow-700 text-white'
                                 : 'bg-green-600 hover:bg-green-700 text-white',
@@ -345,14 +420,14 @@ watch(isConnected, (connected, wasConnected) => {
                             !connectedPlayers.filter((p) => p.role === 'player').every((p) => p.isReady) ||
                             connectedPlayers.filter((p) => p.role === 'player').length < 2
                         "
-                        class="px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed text-white rounded-lg transition-colors cursor-pointer"
+                        class="px-3 sm:px-6 py-2 bg-blue-600 hover:bg-blue-700 disabled:bg-neutral-700 disabled:cursor-not-allowed text-white text-xs sm:text-sm rounded-lg transition-colors cursor-pointer"
                     >
                         {{ $t('ui.startGame') }}
                     </button>
 
                     <button
                         @click="leaveGame"
-                        class="px-6 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg transition-colors cursor-pointer"
+                        class="px-3 sm:px-6 py-2 bg-red-600 hover:bg-red-700 text-white text-xs sm:text-sm rounded-lg transition-colors cursor-pointer"
                     >
                         {{ $t('ui.leaveGame') }}
                     </button>
@@ -361,20 +436,22 @@ watch(isConnected, (connected, wasConnected) => {
 
             <!-- Connected Players -->
             <div
-                class="mx-auto w-full max-w-4xl flex flex-col rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-10 shadow-2xl backdrop-blur"
+                class="mx-auto w-full max-w-4xl flex flex-col rounded-2xl sm:rounded-3xl border border-neutral-800/60 bg-neutral-950/70 p-4 sm:p-6 md:p-10 shadow-2xl backdrop-blur"
             >
-                <h2 class="text-xl font-semibold text-neutral-100 mb-6">{{ $t('ui.connectedPlayers') }}</h2>
+                <h2 class="text-lg sm:text-xl font-semibold text-neutral-100 mb-4 sm:mb-6">
+                    {{ $t('ui.connectedPlayers') }}
+                </h2>
 
                 <!-- Players List -->
-                <div class="grid gap-4">
+                <div class="grid gap-2 sm:gap-4">
                     <div
                         v-for="player in connectedPlayers"
                         :key="player.userId"
-                        class="flex items-center justify-between rounded-xl border border-neutral-700 bg-neutral-800/50 p-4"
+                        class="flex items-center justify-between rounded-lg sm:rounded-xl border border-neutral-700 bg-neutral-800/50 p-3 sm:p-4"
                     >
-                        <div class="flex items-center gap-4">
+                        <div class="flex items-center gap-2 sm:gap-4">
                             <div
-                                class="w-10 h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold overflow-hidden"
+                                class="w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-blue-600 flex items-center justify-center text-white font-semibold overflow-hidden flex-shrink-0"
                             >
                                 <img
                                     v-if="player.userImage"
@@ -382,16 +459,34 @@ watch(isConnected, (connected, wasConnected) => {
                                     :alt="player.userName"
                                     class="w-full h-full object-cover"
                                 />
-                                <span v-else>{{ player.userName.charAt(0).toUpperCase() }}</span>
+                                <span v-else class="text-xs sm:text-sm">{{
+                                    player.userName.charAt(0).toUpperCase()
+                                }}</span>
                             </div>
                             <div>
-                                <h3 class="font-medium text-neutral-100">{{ player.userName }}</h3>
-                                <div class="flex items-center gap-4 text-sm text-neutral-400">
+                                <div class="flex items-center gap-2">
+                                    <h3 class="font-medium text-neutral-100 text-left text-sm sm:text-base">
+                                        {{ player.userName }}
+                                    </h3>
+                                    <span
+                                        v-if="player.userId === room?.hostId"
+                                        class="flex items-center gap-0.5 text-xs text-yellow-400"
+                                        title="Host"
+                                    >
+                                        <svg class="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                            <path
+                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                                            />
+                                        </svg>
+                                        <span class="hidden sm:inline">{{ $t('ui.host') }}</span>
+                                    </span>
+                                </div>
+                                <div class="flex items-center gap-2 sm:gap-4 text-xs sm:text-sm text-neutral-400">
                                     <span>{{ $t('ui.wins', { wins: player.wins }) }}</span>
                                     <span
                                         v-if="player.role === 'player'"
                                         :class="[
-                                            'px-2 py-1 rounded-full text-xs',
+                                            'px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs',
                                             player.isReady
                                                 ? 'bg-green-600/20 text-green-400'
                                                 : 'bg-yellow-600/20 text-yellow-400',
@@ -401,15 +496,15 @@ watch(isConnected, (connected, wasConnected) => {
                                     </span>
                                     <span
                                         v-if="player.role === 'spectator'"
-                                        class="px-2 py-1 rounded-full text-xs bg-purple-600/20 text-purple-400"
+                                        class="px-1.5 sm:px-2 py-0.5 sm:py-1 rounded-full text-xs bg-purple-600/20 text-purple-400"
                                     >
                                         {{ $t('ui.spectator') }}
                                     </span>
                                 </div>
                             </div>
                         </div>
-                        <div class="text-right">
-                            <div class="text-lg font-semibold text-blue-400">
+                        <div class="text-right flex-shrink-0">
+                            <div class="text-base sm:text-lg font-semibold text-blue-400">
                                 {{ player.currentClicks }}
                             </div>
                             <div class="text-xs text-neutral-400">{{ $t('ui.clicks') }}</div>
